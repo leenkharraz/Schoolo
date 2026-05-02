@@ -10,13 +10,21 @@ import React, {
 export interface UserProfile {
   name: string;
   phone: string;
+  email: string;
   city: string;
   budgetMin: number;
   budgetMax: number;
   preferredCurriculum: string;
   childrenCount: number;
+  childAge: number;
+  childGrade: string;
   specialNeeds: boolean;
+  preferredLanguage: string;
+  preferredActivities: string[];
+  distanceMax: number;
+  preferredSchoolType: string;
   isLoggedIn: boolean;
+  hasCompletedOnboarding: boolean;
 }
 
 export interface ChatMessage {
@@ -36,6 +44,8 @@ export interface Alert {
   type: "deadline" | "new_school" | "open_day" | "fee_update" | "match";
 }
 
+type SortOrder = "featured" | "price_asc" | "price_desc" | "rating";
+
 interface AppState {
   user: UserProfile;
   favorites: string[];
@@ -43,6 +53,8 @@ interface AppState {
   chatMessages: ChatMessage[];
   alerts: Alert[];
   activeFilter: string;
+  sortOrder: SortOrder;
+  selectedCity: string;
 }
 
 interface AppContextValue extends AppState {
@@ -52,6 +64,8 @@ interface AppContextValue extends AppState {
   addChatMessage: (msg: ChatMessage) => void;
   clearChat: () => void;
   setActiveFilter: (filter: string) => void;
+  setSortOrder: (sort: SortOrder) => void;
+  setSelectedCity: (city: string) => void;
   markAlertRead: (id: string) => void;
   unreadAlertCount: number;
 }
@@ -59,13 +73,21 @@ interface AppContextValue extends AppState {
 const DEFAULT_USER: UserProfile = {
   name: "",
   phone: "",
+  email: "",
   city: "Riyadh",
   budgetMin: 10000,
   budgetMax: 70000,
   preferredCurriculum: "Any",
   childrenCount: 1,
+  childAge: 8,
+  childGrade: "Grade 3",
   specialNeeds: false,
+  preferredLanguage: "None",
+  preferredActivities: [],
+  distanceMax: 10,
+  preferredSchoolType: "any",
   isLoggedIn: false,
+  hasCompletedOnboarding: false,
 };
 
 const DEFAULT_ALERTS: Alert[] = [
@@ -117,8 +139,7 @@ const DEFAULT_ALERTS: Alert[] = [
 ];
 
 const AppContext = createContext<AppContextValue | null>(null);
-
-const STORAGE_KEY = "schoolo_state_v1";
+const STORAGE_KEY = "schoolo_state_v2";
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AppState>({
@@ -128,7 +149,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     chatMessages: [],
     alerts: DEFAULT_ALERTS,
     activeFilter: "all",
+    sortOrder: "featured",
+    selectedCity: "All",
   });
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY).then((raw) => {
@@ -142,9 +166,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             lastSeen: saved.lastSeen || [],
             chatMessages: saved.chatMessages || [],
             alerts: saved.alerts || DEFAULT_ALERTS,
+            selectedCity: saved.selectedCity || "All",
           }));
         } catch {}
       }
+      setLoaded(true);
     });
   }, []);
 
@@ -157,6 +183,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         lastSeen: next.lastSeen,
         chatMessages: next.chatMessages,
         alerts: next.alerts,
+        selectedCity: next.selectedCity,
       })
     );
   }, []);
@@ -212,6 +239,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => ({ ...prev, activeFilter: filter }));
   }, []);
 
+  const setSortOrder = useCallback((sortOrder: SortOrder) => {
+    setState((prev) => ({ ...prev, sortOrder }));
+  }, []);
+
+  const setSelectedCity = useCallback((city: string) => {
+    setState((prev) => {
+      const next = { ...prev, selectedCity: city };
+      save(next);
+      return next;
+    });
+  }, [save]);
+
   const markAlertRead = useCallback((id: string) => {
     setState((prev) => {
       const alerts = prev.alerts.map((a) =>
@@ -225,6 +264,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const unreadAlertCount = state.alerts.filter((a) => !a.read).length;
 
+  if (!loaded) return null;
+
   return (
     <AppContext.Provider
       value={{
@@ -235,6 +276,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         addChatMessage,
         clearChat,
         setActiveFilter,
+        setSortOrder,
+        setSelectedCity,
         markAlertRead,
         unreadAlertCount,
       }}

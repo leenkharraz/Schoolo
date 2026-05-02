@@ -6,7 +6,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -14,18 +14,43 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { AppProvider } from "@/context/AppContext";
+import { AppProvider, useApp } from "@/context/AppContext";
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
+function AuthGate() {
+  const { user } = useApp();
+  const router = useRouter();
+  const segments = useSegments();
+
+  useEffect(() => {
+    const inAuthScreen = segments[0] === "login" || segments[0] === "onboarding";
+
+    if (!user.isLoggedIn && !inAuthScreen) {
+      router.replace("/login");
+    } else if (user.isLoggedIn && !user.hasCompletedOnboarding && segments[0] !== "onboarding") {
+      router.replace("/onboarding");
+    } else if (user.isLoggedIn && user.hasCompletedOnboarding && inAuthScreen) {
+      router.replace("/");
+    }
+  }, [user.isLoggedIn, user.hasCompletedOnboarding, segments]);
+
+  return null;
+}
+
 function RootLayoutNav() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="school" options={{ headerShown: false, animation: "slide_from_right" }} />
-    </Stack>
+    <>
+      <AuthGate />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="school" options={{ headerShown: false, animation: "slide_from_right" }} />
+        <Stack.Screen name="login" options={{ headerShown: false, animation: "none" }} />
+        <Stack.Screen name="onboarding" options={{ headerShown: false, animation: "slide_from_bottom" }} />
+      </Stack>
+    </>
   );
 }
 

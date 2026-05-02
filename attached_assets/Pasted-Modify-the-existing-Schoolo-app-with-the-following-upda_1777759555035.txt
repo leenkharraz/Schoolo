@@ -1,0 +1,94 @@
+Modify the existing Schoolo app with the following updates. Keep the current design style consistent, but improve the UI and user flow.
+1. Create Login Page
+Create a login page before entering the app.
+The page should include:
+- Schoolo logo at the top
+- Username input
+- Password input
+- Login button
+- Create Account link
+- Forgot Password link
+- Login with Google button
+- Login with iCloud button
+After login, ask the user several onboarding questions to understand school preferences, then generate a perfect school match.
+Onboarding questions should include:
+- Preferred city
+- Child age and grade
+- Budget range
+- Preferred curriculum
+- Preferred third language such as Spanish or French
+- Preferred activities such as football or basketball
+- Special needs support
+- Distance preference
+- Preferred school type
+2. Home Page
+Update the home page to include:
+- Schoolo logo
+- Dropdown menu to change city:
+  - Jeddah
+  - Riyadh
+- Sorting options:
+  - Price from lowest to highest
+  - Price from highest to lowest
+  - Most rated
+- Notification icon with a proper notification design
+- Nearest school distance shown clearly, for example: 3.4 km away
+- Add “Special Needs Support” to the filter options
+
+3. Schools Page
+Update the schools page with:
+- School pictures and facilities section
+- When the user clicks any school facility picture, the picture should enlarge in a modal or full-screen preview
+- Reviews section must be clickable
+- When clicking reviews, show full reviews about:
+  - School environment
+  - Teaching quality
+  - Teacher efficiency
+  - Price value
+  - Facilities
+- Fees and Cost section should include payment options:
+  - Full year
+  - Term
+  - Installment
+- Schedule view should be clickable
+- When clicking schedule, show available appointment times to visit the school
+- Apply Now page should include:
+  - Student details form
+  - School terms and conditions
+  - Test passing criteria
+  - Book test appointment option
+4. AI Page
+Create or improve the AI page.
+It should include:
+- AI-powered chatbot
+- The chatbot should answer parent questions about schools and kindergartens
+- Add suggested common questions such as:
+  - What is the best school for my budget?
+  - Which school is closest to me?
+  - Does this school support special needs?
+  - What are the school fees?
+  - Can I book a visit?
+  - What curriculum does this school offer?
+5. Profile Page
+Under the account section, add:
+- Full name
+- Phone number
+- Email
+- City dropdown menu:
+  - Jeddah
+  - Riyadh
+Add a School Preferences section including:
+- Preferred curriculum
+- Budget
+- Distance
+- Child grade or age
+- Preferred third language
+- Preferred activities
+- Special needs support
+Fix the special needs point everywhere in the app so it is written clearly as “Special Needs Support” and works as a filter and profile preference.
+6. General Requirements
+- Make all clickable items visually clear
+- Keep the UI clean, modern, and parent-friendly
+- Make the app responsive for mobile
+- Do not remove existing features unless they conflict with these updates
+- Use realistic sample data for schools, fees, reviews, facilities, schedules, and AI suggested questions ‎<This message was edited>
