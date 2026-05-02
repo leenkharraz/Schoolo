@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "luD5D7NXZ988qCADhaNKa"
+uri = "file://artifacts/schoolo/assets/images/icon.png"
+type = "image"
+title = "schoolo_app_icon"
+
+[[generated]]
+id = "no4nYGIXqcFciMyNUi4Hi"
+uri = "file://artifacts/schoolo/assets/images/school1.png"
+type = "image"
+title = "school_building_1"
+
+[[generated]]
+id = "xU09PQ1yRE_RS0q3fyIkH"
+uri = "file://artifacts/schoolo/assets/images/school2.png"
+type = "image"
+title = "school_building_2"
+
+[[generated]]
+id = "Ct5TzUEHupOAt6y5zDU74"
+uri = "file://artifacts/schoolo/assets/images/school3.png"
+type = "image"
+title = "school_building_3"
+
+[[generated]]
+id = "OrE_IXsxqKEivzlStH4lr"
+uri = "file://artifacts/schoolo/assets/images/school4.png"
+type = "image"
+title = "school_building_4"
+
+[[generated]]
+id = "AYtswSZv4w8lLAAnk5mN7"
+uri = "file://artifacts/schoolo/assets/images/school5.png"
+type = "image"
+title = "school_building_5"

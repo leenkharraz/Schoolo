@@ -1,0 +1,25 @@
+i have an app called Schoolo and I want to generatea complete brand identity using AI. my idea is 1. AI-Powered Smart Recommendations (Beyond basic search)     •    "School Fit Score" : An algorithm that matches schools based on the parent’s priorities (e.g., budget, distance, curriculum, special needs support, extracurriculars).     •    "What If" Cost Calculator : Predicts total yearly cost (tuition + transport + uniforms + activities + hidden fees) before enrollment.     •    Waitlist & Admission Alerts : Notifies parents when a waitlist spot opens or when a school’s application window is about to close. 4. Financial & Administrative Power-Ups     •    Sibling Discount Automation : Automatically calculates sibling discounts across multiple children in the same school.     •    Subsidy & Scholarship Finder : Scans local government or NGO programs the parent qualifies for and auto-fills applications.     •    Digital Uniform/Supply Store : Integrated ordering for uniforms, books, and supplies with school’s approved vendor, linked to the same payment method.     •    Expense Analytics : “You spent 35% more on field trips this year vs. last year” or “Your friend’s school charges 20% less for aftercare.” 7. High-Need Niche Features (Competitive moats)     •    Special Education Needs (SEN) Filter : Search for schools by specific support (speech therapy, occupational therapy, dyslexia-friendly).     •    Multi-Language Parent Interface : Critical for expat or immigrant parents – app translates school notices into parent’s preferred language (not just UI).     •    Transfer School Assistant : When moving cities or countries, the app suggests comparable schools and handles credit transfer for payments (if network allows). Target audience are parents The feeling I want to communicate: fun  usable Colors I have in mind:#EA8B33
+#EAA23A
+#F3B940
+#132F45
+#32667F
+#FEF6E7
+What I need from you:
+Write me a professional prompt I can paste into any brand identity generation tool. The prompt should cover: brand personality, logo direction, colors with hex codes, typography, required assets, and what to avoid. Make it specific and actionable — not generic.
+
+
+
+Keep the logo as it is but make it bigger and remove the name (as same as the picture ). For the footer I want: home, alerts, ai chat bot, favorites and profile (you pick the suitable order) in the home page I want to see school pictures and names and ratings that are slidable and are in a kind of big in boxes as suggested schools. Underneath it I want to see last seen schools. 
+
+When pressing the preferred school, it shall show information about the school: from pictures, prices, curriculum, location, facilities (you order them in the best suitable way)
+
+
+The ai chat bot uses the parents information (when log-in) to generate suggestions for the best suitable schools. 
+
+The filters could be for nearest schools, on a specific budget, on private schools or international. It also takes care of siblings discount. 
+
+I would like the main colors to be: #EA8B33 and #FEF6E7 and use these too: #EAA23A #F3B940 #132F45 #32667F . 
+
+
+Make everything realistic for Saudi standards.
+
