@@ -100,7 +100,7 @@ export default function SchoolDetailScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { favorites, toggleFavorite } = useApp();
+  const { favorites, toggleFavorite, addBooking } = useApp();
 
   const school = getSchoolById(id ?? "");
   const isFav = favorites.includes(id ?? "");
@@ -644,7 +644,7 @@ export default function SchoolDetailScreen() {
                   </TouchableOpacity>
                 ))}
                 <TouchableOpacity
-                  onPress={() => { if (selectedSlot) { setSlotBooked(true); Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); } }}
+                  onPress={() => { if (selectedSlot) { addBooking({ id: Date.now().toString(), schoolId: school.id, schoolName: school.name, type: "visit", date: selectedSlot.date, time: selectedSlot.time, status: "upcoming", createdAt: Date.now() }); setSlotBooked(true); Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); } }}
                   disabled={!selectedSlot}
                   style={[styles.ctaPrimary, { backgroundColor: selectedSlot ? colors.primary : colors.border, borderRadius: colors.radius, marginTop: 8 }]}
                 >
@@ -856,6 +856,7 @@ export default function SchoolDetailScreen() {
                         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                       } else {
                         if (!applyForm.agreedToTnC) return;
+                        addBooking({ id: Date.now().toString(), schoolId: school.id, schoolName: school.name, type: "placement_test", date: applySlot?.date ?? "TBD", time: applySlot?.time ?? "TBD", status: "upcoming", createdAt: Date.now() });
                         setApplyDone(true);
                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
                       }

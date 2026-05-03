@@ -1,9 +1,9 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Modal,
   Platform,
   ScrollView,
   StyleSheet,
@@ -15,16 +15,19 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useApp } from "@/context/AppContext";
+import { type Booking, useApp } from "@/context/AppContext";
+import { getScheduleSlots, type AppointmentSlot } from "@/data/reviews";
 import { useColors } from "@/hooks/useColors";
+import { useAppearanceMode, type AppearanceMode } from "@/store/theme";
 
-const CITIES = ["Riyadh", "Jeddah", "Dammam", "Khobar", "Mecca", "Medina"];
+const ACCOUNT_CITIES = ["Jeddah", "Riyadh", "Dammam"];
 const CURRICULA = ["Any", "Saudi National", "British", "American", "IB", "Indian"];
-const LANGUAGES = ["None", "French", "Spanish", "Mandarin", "German", "Portuguese"];
+const PREF_LANGUAGES = ["None", "French", "Spanish", "Mandarin", "German", "Portuguese"];
 const ACTIVITIES = ["Football", "Basketball", "Swimming", "Tennis", "Arts & Crafts", "Music", "Drama", "Robotics", "Chess", "Coding", "Quran"];
 const GRADES = ["KG1", "KG2", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
 const SCHOOL_TYPES = ["any", "private", "international"];
 const DISTANCES = [2, 5, 10, 20, 50];
+const APP_LANGUAGES = ["English", "Arabic", "Hindi", "French", "Spanish"];
 
 function SectionHeader({ title, icon }: { title: string; icon?: string }) {
   const colors = useColors();
@@ -46,15 +49,37 @@ function FieldRow({ label, children, last }: { label: string; children: React.Re
   );
 }
 
+function StatusBadge({ status }: { status: Booking["status"] }) {
+  const colors = useColors();
+  const map = {
+    upcoming: { bg: "#EEF9EE", text: "#16a34a", label: "Upcoming" },
+    updated: { bg: "#EEF5FF", text: "#2563eb", label: "Updated" },
+    cancelled: { bg: "#FEE2E2", text: "#dc2626", label: "Cancelled" },
+    completed: { bg: colors.muted, text: colors.mutedForeground, label: "Completed" },
+  };
+  const s = map[status];
+  return (
+    <View style={[styles.statusBadge, { backgroundColor: s.bg }]}>
+      <Text style={[styles.statusBadgeText, { color: s.text }]}>{s.label}</Text>
+    </View>
+  );
+}
+
 export default function ProfileScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { user, updateUser } = useApp();
+  const { user, updateUser, bookings, cancelBooking, updateBooking, appLanguage, setAppLanguage } = useApp();
+  const [appearanceMode, setAppearanceMode] = useAppearanceMode();
   const topPaddingWeb = Platform.OS === "web" ? 67 : 0;
 
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(user);
+  const [activeBookingTab, setActiveBookingTab] = useState<"upcoming" | "past">("upcoming");
+  const [modifyBookingId, setModifyBookingId] = useState<string | null>(null);
+  const [modifySlot, setModifySlot] = useState<AppointmentSlot | null>(null);
+
+  const scheduleSlots = getScheduleSlots();
 
   const initials = user.name
     ? user.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
@@ -79,6 +104,34 @@ export default function ProfileScreen() {
       preferredActivities: exists ? p.preferredActivities.filter((a) => a !== act) : [...p.preferredActivities, act],
     }));
   };
+
+  const upcomingBookings = bookings.filter((b) => b.status === "upcoming" || b.status === "updated");
+  const pastBookings = bookings.filter((b) => b.status === "cancelled" || b.status === "completed");
+  const displayedBookings = activeBookingTab === "upcoming" ? upcomingBookings : pastBookings;
+
+  const handleCancelBooking = (id: string) => {
+    cancelBooking(id);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+  };
+
+  const handleConfirmModify = () => {
+    if (modifyBookingId && modifySlot) {
+      updateBooking(modifyBookingId, {
+        date: modifySlot.date,
+        time: modifySlot.time,
+        status: "updated",
+      });
+      setModifyBookingId(null);
+      setModifySlot(null);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+  };
+
+  const appearanceOptions: { value: AppearanceMode; label: string; icon: string }[] = [
+    { value: "light", label: "Light", icon: "sunny-outline" },
+    { value: "dark", label: "Dark", icon: "moon-outline" },
+    { value: "device", label: "Device", icon: "phone-portrait-outline" },
+  ];
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
@@ -112,7 +165,7 @@ export default function ProfileScreen() {
           </Text>
         </View>
 
-        {/* Account */}
+        {/* ── ACCOUNT ─────────────────────────────────────────────────────── */}
         <SectionHeader title="ACCOUNT" icon="person-outline" />
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
           <FieldRow label="Full Name">
@@ -141,26 +194,24 @@ export default function ProfileScreen() {
 
           <FieldRow label="City" last>
             {editing ? (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={styles.pillRow}>
-                  {CITIES.map((city) => (
-                    <TouchableOpacity
-                      key={city}
-                      onPress={() => setDraft((p) => ({ ...p, city }))}
-                      style={[styles.pill, { backgroundColor: draft.city === city ? colors.primary : colors.muted, borderRadius: 999 }]}
-                    >
-                      <Text style={[styles.pillText, { color: draft.city === city ? "#FFF" : colors.foreground }]}>{city}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </ScrollView>
+              <View style={styles.pillRow}>
+                {ACCOUNT_CITIES.map((city) => (
+                  <TouchableOpacity
+                    key={city}
+                    onPress={() => setDraft((p) => ({ ...p, city }))}
+                    style={[styles.pill, { backgroundColor: draft.city === city ? colors.primary : colors.muted, borderRadius: 999 }]}
+                  >
+                    <Text style={[styles.pillText, { color: draft.city === city ? "#FFF" : colors.foreground }]}>{city}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             ) : (
               <Text style={[styles.fieldText, { color: colors.foreground }]}>{user.city}</Text>
             )}
           </FieldRow>
         </View>
 
-        {/* School Preferences */}
+        {/* ── SCHOOL PREFERENCES ──────────────────────────────────────────── */}
         <SectionHeader title="SCHOOL PREFERENCES" icon="school-outline" />
         <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
 
@@ -265,7 +316,7 @@ export default function ProfileScreen() {
             {editing ? (
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.pillRow}>
-                  {LANGUAGES.map((l) => (
+                  {PREF_LANGUAGES.map((l) => (
                     <TouchableOpacity key={l} onPress={() => setDraft((p) => ({ ...p, preferredLanguage: l }))}
                       style={[styles.pill, { backgroundColor: draft.preferredLanguage === l ? colors.primary : colors.muted, borderRadius: 999 }]}
                     >
@@ -318,7 +369,7 @@ export default function ProfileScreen() {
                     style={[
                       styles.actChip,
                       {
-                        backgroundColor: draft.preferredActivities.includes(act) ? "#FEF0E0" : colors.muted,
+                        backgroundColor: draft.preferredActivities.includes(act) ? colors.muted : colors.muted,
                         borderColor: draft.preferredActivities.includes(act) ? colors.primary : colors.border,
                         borderRadius: 8,
                       },
@@ -338,13 +389,154 @@ export default function ProfileScreen() {
           </FieldRow>
         </View>
 
-        {/* Fit Score explanation */}
-        <View style={[styles.fitCard, { backgroundColor: "#FEF0E0", borderColor: "#F5D6B0", borderRadius: colors.radius }]}>
+        {/* ── BOOKINGS ─────────────────────────────────────────────────────── */}
+        <SectionHeader title="BOOKINGS" icon="calendar-outline" />
+        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius, overflow: "hidden" }]}>
+          <View style={[styles.tabRow, { backgroundColor: colors.muted }]}>
+            {(["upcoming", "past"] as const).map((tab) => (
+              <TouchableOpacity
+                key={tab}
+                onPress={() => setActiveBookingTab(tab)}
+                style={[styles.tabBtn, { backgroundColor: activeBookingTab === tab ? colors.card : "transparent", borderRadius: colors.radius - 4 }]}
+              >
+                <Text style={[styles.tabBtnText, { color: activeBookingTab === tab ? colors.foreground : colors.mutedForeground, fontWeight: activeBookingTab === tab ? "700" : "500" }]}>
+                  {tab === "upcoming" ? `Upcoming (${upcomingBookings.length})` : `Past (${pastBookings.length})`}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {displayedBookings.length === 0 ? (
+            <View style={styles.emptyBookings}>
+              <Ionicons name="calendar-outline" size={32} color={colors.border} />
+              <Text style={[styles.emptyBookingsText, { color: colors.mutedForeground }]}>
+                {activeBookingTab === "upcoming" ? "No upcoming bookings" : "No past bookings"}
+              </Text>
+            </View>
+          ) : (
+            displayedBookings.map((booking, idx) => (
+              <View
+                key={booking.id}
+                style={[
+                  styles.bookingCard,
+                  {
+                    borderBottomColor: colors.border,
+                    borderBottomWidth: idx < displayedBookings.length - 1 ? 1 : 0,
+                  },
+                ]}
+              >
+                <View style={styles.bookingCardTop}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.bookingSchoolName, { color: colors.foreground }]} numberOfLines={1}>{booking.schoolName}</Text>
+                    <View style={styles.bookingTypeBadgeRow}>
+                      <View style={[styles.bookingTypeBadge, { backgroundColor: booking.type === "visit" ? "#EEF5FF" : "#FEF0E0" }]}>
+                        <Ionicons name={booking.type === "visit" ? "eye-outline" : "document-text-outline"} size={11} color={booking.type === "visit" ? "#2563eb" : colors.primary} />
+                        <Text style={[styles.bookingTypeBadgeText, { color: booking.type === "visit" ? "#2563eb" : colors.primary }]}>
+                          {booking.type === "visit" ? "School Visit" : "Placement Test"}
+                        </Text>
+                      </View>
+                      <StatusBadge status={booking.status} />
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.bookingMeta}>
+                  <View style={styles.bookingMetaItem}>
+                    <Ionicons name="calendar-outline" size={13} color={colors.mutedForeground} />
+                    <Text style={[styles.bookingMetaText, { color: colors.mutedForeground }]}>{booking.date}</Text>
+                  </View>
+                  <View style={styles.bookingMetaItem}>
+                    <Ionicons name="time-outline" size={13} color={colors.mutedForeground} />
+                    <Text style={[styles.bookingMetaText, { color: colors.mutedForeground }]}>{booking.time}</Text>
+                  </View>
+                </View>
+                {(booking.status === "upcoming" || booking.status === "updated") && (
+                  <View style={styles.bookingActions}>
+                    <TouchableOpacity
+                      onPress={() => { setModifyBookingId(booking.id); setModifySlot(null); }}
+                      style={[styles.bookingActionBtn, { backgroundColor: colors.muted, borderRadius: 8 }]}
+                    >
+                      <Ionicons name="create-outline" size={14} color={colors.foreground} />
+                      <Text style={[styles.bookingActionText, { color: colors.foreground }]}>Modify</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleCancelBooking(booking.id)}
+                      style={[styles.bookingActionBtn, { backgroundColor: "#FEE2E2", borderRadius: 8 }]}
+                    >
+                      <Ionicons name="close-circle-outline" size={14} color="#dc2626" />
+                      <Text style={[styles.bookingActionText, { color: "#dc2626" }]}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            ))
+          )}
+        </View>
+
+        {/* ── SETTINGS ─────────────────────────────────────────────────────── */}
+        <SectionHeader title="SETTINGS" icon="settings-outline" />
+        <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}>
+
+          {/* Appearance */}
+          <View style={[styles.settingsRow, { borderBottomColor: colors.border, borderBottomWidth: 1 }]}>
+            <View style={styles.settingsRowLeft}>
+              <Ionicons name="contrast-outline" size={16} color={colors.primary} />
+              <Text style={[styles.settingsLabel, { color: colors.foreground }]}>Appearance</Text>
+            </View>
+            <View style={styles.appearanceOptions}>
+              {appearanceOptions.map((opt) => (
+                <TouchableOpacity
+                  key={opt.value}
+                  onPress={() => { setAppearanceMode(opt.value); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+                  style={[
+                    styles.appearanceBtn,
+                    {
+                      backgroundColor: appearanceMode === opt.value ? colors.primary : colors.muted,
+                      borderRadius: 8,
+                    },
+                  ]}
+                >
+                  <Ionicons name={opt.icon as any} size={13} color={appearanceMode === opt.value ? "#FFF" : colors.mutedForeground} />
+                  <Text style={[styles.appearanceBtnText, { color: appearanceMode === opt.value ? "#FFF" : colors.foreground }]}>{opt.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Language */}
+          <View style={styles.settingsRow}>
+            <View style={styles.settingsRowLeft}>
+              <Ionicons name="language-outline" size={16} color={colors.primary} />
+              <Text style={[styles.settingsLabel, { color: colors.foreground }]}>Language</Text>
+            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.langOptions}>
+                {APP_LANGUAGES.map((lang) => (
+                  <TouchableOpacity
+                    key={lang}
+                    onPress={() => { setAppLanguage(lang); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+                    style={[
+                      styles.langBtn,
+                      {
+                        backgroundColor: appLanguage === lang ? colors.primary : colors.muted,
+                        borderRadius: 999,
+                      },
+                    ]}
+                  >
+                    <Text style={[styles.langBtnText, { color: appLanguage === lang ? "#FFF" : colors.foreground }]}>{lang}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+
+        {/* Fit Score card */}
+        <View style={[styles.fitCard, { backgroundColor: colors.muted, borderColor: colors.border, borderRadius: colors.radius }]}>
           <View style={styles.fitCardHeader}>
             <Ionicons name="sparkles" size={16} color={colors.primary} />
             <Text style={[styles.fitCardTitle, { color: colors.primary }]}>How School Fit Score works</Text>
           </View>
-          <Text style={[styles.fitCardBody, { color: colors.navy }]}>
+          <Text style={[styles.fitCardBody, { color: colors.foreground }]}>
             Your Fit Score is calculated from your budget, preferred curriculum, city, distance preference, number of children, activities, and Special Needs Support requirements. Schools are ranked from 0–100% match.
           </Text>
         </View>
@@ -358,6 +550,54 @@ export default function ProfileScreen() {
           <Text style={[styles.logoutText, { color: colors.destructive }]}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* ── Modify Booking Modal ─────────────────────────────────────────── */}
+      <Modal visible={!!modifyBookingId} transparent animationType="slide" onRequestClose={() => setModifyBookingId(null)}>
+        <View style={styles.sheetOverlay}>
+          <View style={[styles.sheet, { backgroundColor: colors.background }]}>
+            <View style={[styles.sheetHandle, { backgroundColor: colors.border }]} />
+            <View style={styles.sheetHeader}>
+              <Text style={[styles.sheetTitle, { color: colors.foreground }]}>Modify Booking</Text>
+              <TouchableOpacity onPress={() => setModifyBookingId(null)}>
+                <Ionicons name="close" size={22} color={colors.mutedForeground} />
+              </TouchableOpacity>
+            </View>
+            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: 16, gap: 8 }}>
+              <Text style={[styles.slotSubtitle, { color: colors.mutedForeground }]}>Choose a new date and time:</Text>
+              {scheduleSlots.map((slot) => {
+                const isSelected = modifySlot?.date === slot.date && modifySlot?.time === slot.time;
+                return (
+                  <TouchableOpacity
+                    key={`${slot.date}-${slot.time}`}
+                    onPress={() => { setModifySlot(slot); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+                    style={[
+                      styles.slotRow,
+                      {
+                        backgroundColor: isSelected ? colors.muted : colors.card,
+                        borderColor: isSelected ? colors.primary : colors.border,
+                        borderRadius: 12,
+                      },
+                    ]}
+                  >
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.slotDate, { color: colors.foreground }]}>{slot.date}</Text>
+                      <Text style={[styles.slotTime, { color: colors.mutedForeground }]}>{slot.time}</Text>
+                    </View>
+                    {isSelected && <Ionicons name="checkmark-circle" size={18} color={colors.primary} />}
+                  </TouchableOpacity>
+                );
+              })}
+              <TouchableOpacity
+                onPress={handleConfirmModify}
+                disabled={!modifySlot}
+                style={[styles.ctaPrimary, { backgroundColor: modifySlot ? colors.primary : colors.border, borderRadius: colors.radius, marginTop: 8 }]}
+              >
+                <Text style={styles.ctaPrimaryText}>Confirm New Time</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -393,10 +633,54 @@ const styles = StyleSheet.create({
   activityGrid: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
   actChip: { paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1 },
   actChipText: { fontSize: 12, fontWeight: "500" },
+  // Bookings
+  tabRow: { flexDirection: "row", padding: 4, margin: 12, borderRadius: 12 },
+  tabBtn: { flex: 1, paddingVertical: 8, alignItems: "center" },
+  tabBtnText: { fontSize: 13 },
+  emptyBookings: { alignItems: "center", paddingVertical: 32, gap: 10 },
+  emptyBookingsText: { fontSize: 14 },
+  bookingCard: { paddingHorizontal: 16, paddingVertical: 14, gap: 8 },
+  bookingCardTop: { flexDirection: "row", alignItems: "flex-start" },
+  bookingSchoolName: { fontSize: 15, fontWeight: "700", marginBottom: 4 },
+  bookingTypeBadgeRow: { flexDirection: "row", gap: 6, alignItems: "center" },
+  bookingTypeBadge: { flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 },
+  bookingTypeBadgeText: { fontSize: 11, fontWeight: "600" },
+  statusBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 },
+  statusBadgeText: { fontSize: 11, fontWeight: "700" },
+  bookingMeta: { flexDirection: "row", gap: 16 },
+  bookingMetaItem: { flexDirection: "row", alignItems: "center", gap: 4 },
+  bookingMetaText: { fontSize: 13 },
+  bookingActions: { flexDirection: "row", gap: 8 },
+  bookingActionBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, paddingVertical: 8 },
+  bookingActionText: { fontSize: 13, fontWeight: "600" },
+  // Settings
+  settingsRow: { paddingHorizontal: 16, paddingVertical: 14, gap: 10 },
+  settingsRowLeft: { flexDirection: "row", alignItems: "center", gap: 8 },
+  settingsLabel: { fontSize: 14, fontWeight: "600" },
+  appearanceOptions: { flexDirection: "row", gap: 6 },
+  appearanceBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, paddingVertical: 8 },
+  appearanceBtnText: { fontSize: 12, fontWeight: "600" },
+  langOptions: { flexDirection: "row", gap: 8 },
+  langBtn: { paddingHorizontal: 14, paddingVertical: 7 },
+  langBtnText: { fontSize: 13, fontWeight: "600" },
+  // Fit card
   fitCard: { marginTop: 20, padding: 16, borderWidth: 1, gap: 8 },
   fitCardHeader: { flexDirection: "row", alignItems: "center", gap: 6 },
   fitCardTitle: { fontSize: 14, fontWeight: "700" },
   fitCardBody: { fontSize: 13, lineHeight: 19 },
+  // Logout
   logoutBtn: { marginTop: 24, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 14, borderWidth: 1 },
   logoutText: { fontSize: 15, fontWeight: "600" },
+  // Modify modal
+  sheetOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "flex-end" },
+  sheet: { borderTopLeftRadius: 20, borderTopRightRadius: 20, maxHeight: "85%", paddingBottom: 32 },
+  sheetHandle: { width: 40, height: 4, borderRadius: 2, alignSelf: "center", marginTop: 10, marginBottom: 4 },
+  sheetHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 20, paddingVertical: 14 },
+  sheetTitle: { fontSize: 18, fontWeight: "700" },
+  slotSubtitle: { fontSize: 13, marginBottom: 4 },
+  slotRow: { borderWidth: 1, padding: 14, flexDirection: "row", alignItems: "center" },
+  slotDate: { fontSize: 14, fontWeight: "600" },
+  slotTime: { fontSize: 13, marginTop: 2 },
+  ctaPrimary: { paddingVertical: 14, alignItems: "center" },
+  ctaPrimaryText: { color: "#FFF", fontSize: 16, fontWeight: "700" },
 });

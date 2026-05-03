@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 
+import { loadAppearanceMode } from "@/store/theme";
+
 export interface UserProfile {
   name: string;
   phone: string;
@@ -25,6 +27,17 @@ export interface UserProfile {
   preferredSchoolType: string;
   isLoggedIn: boolean;
   hasCompletedOnboarding: boolean;
+}
+
+export interface Booking {
+  id: string;
+  schoolId: string;
+  schoolName: string;
+  type: "visit" | "placement_test";
+  date: string;
+  time: string;
+  status: "upcoming" | "updated" | "cancelled" | "completed";
+  createdAt: number;
 }
 
 export interface ChatMessage {
@@ -52,9 +65,11 @@ interface AppState {
   lastSeen: string[];
   chatMessages: ChatMessage[];
   alerts: Alert[];
+  bookings: Booking[];
   activeFilter: string;
   sortOrder: SortOrder;
   selectedCity: string;
+  appLanguage: string;
 }
 
 interface AppContextValue extends AppState {
@@ -68,6 +83,10 @@ interface AppContextValue extends AppState {
   setSelectedCity: (city: string) => void;
   markAlertRead: (id: string) => void;
   unreadAlertCount: number;
+  addBooking: (booking: Booking) => void;
+  updateBooking: (id: string, updates: Partial<Booking>) => void;
+  cancelBooking: (id: string) => void;
+  setAppLanguage: (lang: string) => void;
 }
 
 const DEFAULT_USER: UserProfile = {
@@ -93,53 +112,53 @@ const DEFAULT_USER: UserProfile = {
 const DEFAULT_ALERTS: Alert[] = [
   {
     id: "a1",
-    title: "Open Day: International School of Riyadh",
+    title: "Open Day: American International School Riyadh",
     body: "Join us for an Open Day on Thursday 15 May at 10:00 AM. Meet teachers and tour the campus.",
     timestamp: Date.now() - 3600000,
     read: false,
-    schoolId: "1",
+    schoolId: "r1",
     type: "open_day",
   },
   {
     id: "a2",
-    title: "Enrollment Deadline Approaching",
-    body: "British International School Riyadh closes enrollment for the 2025–2026 academic year on 1 June.",
+    title: "Enrollment Deadline: British International School Riyadh",
+    body: "BISR closes enrollment for the 2025–2026 academic year on 1 June.",
     timestamp: Date.now() - 86400000,
     read: false,
-    schoolId: "2",
+    schoolId: "r2",
     type: "deadline",
   },
   {
     id: "a3",
     title: "New School Match Found",
-    body: "King's International School matches your preferences — IB curriculum with siblings discount available.",
+    body: "SEK International School Riyadh matches your preferences — IB curriculum with multilingual programmes.",
     timestamp: Date.now() - 172800000,
     read: true,
-    schoolId: "10",
+    schoolId: "r4",
     type: "match",
   },
   {
     id: "a4",
-    title: "Fee Update: Al Rowad International",
-    body: "Al Rowad International has announced a 5% fee increase for the 2025–2026 academic year.",
+    title: "Fee Update: Jeddah Knowledge International",
+    body: "Jeddah Knowledge International has announced updated fees for the 2025–2026 academic year.",
     timestamp: Date.now() - 259200000,
     read: true,
-    schoolId: "3",
+    schoolId: "j4",
     type: "fee_update",
   },
   {
     id: "a5",
-    title: "Sibling Discount Available",
-    body: "Indian International School Riyadh offers up to 30% sibling discount — one of the highest in Riyadh.",
+    title: "Open Day: Al Waha International School",
+    body: "Al Waha International School is hosting a Parent Open Day — come see the campus and meet the principal.",
     timestamp: Date.now() - 432000000,
     read: false,
-    schoolId: "7",
-    type: "new_school",
+    schoolId: "j5",
+    type: "open_day",
   },
 ];
 
 const AppContext = createContext<AppContextValue | null>(null);
-const STORAGE_KEY = "schoolo_state_v2";
+const STORAGE_KEY = "schoolo_state_v3";
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AppState>({
@@ -148,14 +167,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     lastSeen: [],
     chatMessages: [],
     alerts: DEFAULT_ALERTS,
+    bookings: [],
     activeFilter: "all",
     sortOrder: "featured",
     selectedCity: "All",
+    appLanguage: "English",
   });
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY).then((raw) => {
+    Promise.all([
+      AsyncStorage.getItem(STORAGE_KEY),
+      loadAppearanceMode(),
+    ]).then(([raw]) => {
       if (raw) {
         try {
           const saved = JSON.parse(raw);
@@ -166,7 +190,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             lastSeen: saved.lastSeen || [],
             chatMessages: saved.chatMessages || [],
             alerts: saved.alerts || DEFAULT_ALERTS,
+            bookings: saved.bookings || [],
             selectedCity: saved.selectedCity || "All",
+            appLanguage: saved.appLanguage || "English",
           }));
         } catch {}
       }
@@ -183,7 +209,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         lastSeen: next.lastSeen,
         chatMessages: next.chatMessages,
         alerts: next.alerts,
+        bookings: next.bookings,
         selectedCity: next.selectedCity,
+        appLanguage: next.appLanguage,
       })
     );
   }, []);
@@ -262,6 +290,45 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, [save]);
 
+  const addBooking = useCallback((booking: Booking) => {
+    setState((prev) => {
+      const bookings = [...prev.bookings, booking];
+      const next = { ...prev, bookings };
+      save(next);
+      return next;
+    });
+  }, [save]);
+
+  const updateBooking = useCallback((id: string, updates: Partial<Booking>) => {
+    setState((prev) => {
+      const bookings = prev.bookings.map((b) =>
+        b.id === id ? { ...b, ...updates } : b
+      );
+      const next = { ...prev, bookings };
+      save(next);
+      return next;
+    });
+  }, [save]);
+
+  const cancelBooking = useCallback((id: string) => {
+    setState((prev) => {
+      const bookings = prev.bookings.map((b) =>
+        b.id === id ? { ...b, status: "cancelled" as const } : b
+      );
+      const next = { ...prev, bookings };
+      save(next);
+      return next;
+    });
+  }, [save]);
+
+  const setAppLanguage = useCallback((lang: string) => {
+    setState((prev) => {
+      const next = { ...prev, appLanguage: lang };
+      save(next);
+      return next;
+    });
+  }, [save]);
+
   const unreadAlertCount = state.alerts.filter((a) => !a.read).length;
 
   if (!loaded) return null;
@@ -280,6 +347,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         setSelectedCity,
         markAlertRead,
         unreadAlertCount,
+        addBooking,
+        updateBooking,
+        cancelBooking,
+        setAppLanguage,
       }}
     >
       {children}
