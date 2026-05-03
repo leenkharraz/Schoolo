@@ -38,6 +38,12 @@ export interface School {
   color: string;
   feeCategory: string;
   tags: string[];
+  contact: {
+    phone: string;
+    email: string;
+    admissionsEmail?: string;
+    website?: string;
+  };
 }
 
 export const SCHOOLS: School[] = [
@@ -76,6 +82,12 @@ export const SCHOOLS: School[] = [
     color: "#EA8B33",
     feeCategory: "40K–60K",
     tags: ["Mid-range", "Value", "Private"],
+    contact: {
+      phone: "+966126531000",
+      email: "info@darrowad.edu.sa",
+      admissionsEmail: "admissions@darrowad.edu.sa",
+      website: "www.darrowad.edu.sa",
+    },
   },
   {
     id: "j2",
@@ -111,6 +123,12 @@ export const SCHOOLS: School[] = [
     color: "#32667F",
     feeCategory: "80K+",
     tags: ["Premium", "International", "AP"],
+    contact: {
+      phone: "+966126870444",
+      email: "info@aisj.edu.sa",
+      admissionsEmail: "admissions@aisj.edu.sa",
+      website: "www.aisj.edu.sa",
+    },
   },
   {
     id: "j3",
@@ -146,6 +164,12 @@ export const SCHOOLS: School[] = [
     color: "#132F45",
     feeCategory: "80K+",
     tags: ["Premium", "British", "International"],
+    contact: {
+      phone: "+966126650200",
+      email: "info@bisj.edu.sa",
+      admissionsEmail: "admissions@bisj.edu.sa",
+      website: "www.bisj.edu.sa",
+    },
   },
   {
     id: "j4",
@@ -181,6 +205,12 @@ export const SCHOOLS: School[] = [
     color: "#EAA23A",
     feeCategory: "60K–80K",
     tags: ["International", "Academic"],
+    contact: {
+      phone: "+966126782100",
+      email: "info@jkis.edu.sa",
+      admissionsEmail: "admissions@jkis.edu.sa",
+      website: "www.jkis.edu.sa",
+    },
   },
   {
     id: "j5",
@@ -216,6 +246,11 @@ export const SCHOOLS: School[] = [
     color: "#32667F",
     feeCategory: "20K–30K",
     tags: ["Budget", "Private"],
+    contact: {
+      phone: "+966126340900",
+      email: "info@alwahais.edu.sa",
+      website: "www.alwahais.edu.sa",
+    },
   },
 
   // ── RIYADH ───────────────────────────────────────────────────────────────────
@@ -253,6 +288,12 @@ export const SCHOOLS: School[] = [
     color: "#EA8B33",
     feeCategory: "80K+",
     tags: ["Elite", "International", "IB"],
+    contact: {
+      phone: "+966114820555",
+      email: "info@aisr.edu.sa",
+      admissionsEmail: "admissions@aisr.edu.sa",
+      website: "www.aisr.edu.sa",
+    },
   },
   {
     id: "r2",
@@ -288,6 +329,12 @@ export const SCHOOLS: School[] = [
     color: "#32667F",
     feeCategory: "80K+",
     tags: ["Premium", "British", "International"],
+    contact: {
+      phone: "+966114554800",
+      email: "info@bisr.edu.sa",
+      admissionsEmail: "admissions@bisr.edu.sa",
+      website: "www.bisr.edu.sa",
+    },
   },
   {
     id: "r3",
@@ -323,6 +370,12 @@ export const SCHOOLS: School[] = [
     color: "#EAA23A",
     feeCategory: "40K–60K",
     tags: ["Mid-range", "Private"],
+    contact: {
+      phone: "+966114321700",
+      email: "info@als.edu.sa",
+      admissionsEmail: "admissions@als.edu.sa",
+      website: "www.als.edu.sa",
+    },
   },
   {
     id: "r4",
@@ -358,6 +411,12 @@ export const SCHOOLS: School[] = [
     color: "#132F45",
     feeCategory: "80K+",
     tags: ["IB", "Premium", "International"],
+    contact: {
+      phone: "+966114789300",
+      email: "info@sek-riyadh.edu.sa",
+      admissionsEmail: "admissions@sek-riyadh.edu.sa",
+      website: "www.sek-riyadh.edu.sa",
+    },
   },
   {
     id: "r5",
@@ -393,6 +452,11 @@ export const SCHOOLS: School[] = [
     color: "#32667F",
     feeCategory: "20K–30K",
     tags: ["Budget", "International"],
+    contact: {
+      phone: "+966114210600",
+      email: "info@alfaris.edu.sa",
+      website: "www.alfaris.edu.sa",
+    },
   },
 
   // ── DAMMAM ───────────────────────────────────────────────────────────────────
@@ -430,6 +494,12 @@ export const SCHOOLS: School[] = [
     color: "#EA8B33",
     feeCategory: "60K–80K",
     tags: ["International", "American"],
+    contact: {
+      phone: "+966138321500",
+      email: "info@isgdammam.edu.sa",
+      admissionsEmail: "admissions@isgdammam.edu.sa",
+      website: "www.isgdammam.edu.sa",
+    },
   },
   {
     id: "d2",
@@ -465,6 +535,12 @@ export const SCHOOLS: School[] = [
     color: "#32667F",
     feeCategory: "60K–80K",
     tags: ["British", "International"],
+    contact: {
+      phone: "+966138940200",
+      email: "info@dbgs.edu.sa",
+      admissionsEmail: "admissions@dbgs.edu.sa",
+      website: "www.dbgs.edu.sa",
+    },
   },
   {
     id: "d3",
@@ -500,6 +576,12 @@ export const SCHOOLS: School[] = [
     color: "#EAA23A",
     feeCategory: "40K–60K",
     tags: ["Value", "Private", "International"],
+    contact: {
+      phone: "+966138560400",
+      email: "info@alhussan.edu.sa",
+      admissionsEmail: "admissions@alhussan.edu.sa",
+      website: "www.alhussan.edu.sa",
+    },
   },
   {
     id: "d4",
@@ -535,6 +617,11 @@ export const SCHOOLS: School[] = [
     color: "#132F45",
     feeCategory: "20K–30K",
     tags: ["Budget", "Private"],
+    contact: {
+      phone: "+966138270100",
+      email: "info@almanahil.edu.sa",
+      website: "www.almanahil.edu.sa",
+    },
   },
   {
     id: "d5",
@@ -570,6 +657,12 @@ export const SCHOOLS: School[] = [
     color: "#EAA23A",
     feeCategory: "40K–60K",
     tags: ["Mid-range", "International"],
+    contact: {
+      phone: "+966138415800",
+      email: "info@futureis-dammam.edu.sa",
+      admissionsEmail: "admissions@futureis-dammam.edu.sa",
+      website: "www.futureis-dammam.edu.sa",
+    },
   },
 ];
 
