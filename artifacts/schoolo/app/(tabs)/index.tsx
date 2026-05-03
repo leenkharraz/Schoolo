@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   scrollContent: { paddingHorizontal: 20 },
   header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 14 },
-  logo: { width: 120, height: 44 },
+  logo: { width: 160, height: 58 },
   headerRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   locationChip: { flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, borderWidth: 1 },
   locationText: { fontSize: 12, fontWeight: "500" },

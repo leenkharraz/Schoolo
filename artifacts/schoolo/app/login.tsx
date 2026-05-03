@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingHorizontal: 24, gap: 0 },
   logoBlock: { alignItems: "center", marginBottom: 24 },
-  logo: { width: 180, height: 72 },
+  logo: { width: 260, height: 104 },
   headline: { fontSize: 28, fontWeight: "800", letterSpacing: -0.5, textAlign: "center" },
   subheadline: { fontSize: 14, textAlign: "center", marginTop: 6, marginBottom: 24, lineHeight: 20 },
   tabRow: { flexDirection: "row", padding: 4, marginBottom: 24 },

@@ -1,0 +1,494 @@
+Modify ONLY the requested parts of the existing Schoolo app.
+
+Do NOT redesign the app.
+Do NOT change the existing layout, spacing, border radius, typography, navigation structure, school card design, school detail page design, or app logic unless required for the requested features.
+Do NOT remove existing buttons or features.
+Do NOT break navigation.
+Keep all prices in SAR.
+
+Requested updates:
+1. Update school details/data
+2. Update Profile page sections
+3. Add Settings section inside Profile
+4. Add booking management
+5. Add dark mode theme
+6. Update Alerts page with booking notifications
+
+--------------------------------
+1. SCHOOL DATA UPDATE
+--------------------------------
+
+Modify ONLY the school details/data files or mock data.
+Use the same existing data structure in the project.
+If the app uses arrays, objects, JSON, or mock data files, update only those files.
+
+Each school must include:
+- name
+- city
+- curriculum
+- grades
+- languages
+- location
+- short description
+- fee details
+- fee category
+- tags
+- school fit score
+
+Add 5 schools for each city:
+- Jeddah
+- Riyadh
+- Dammam
+
+Each city must include:
+- At least one budget school around 20K–30K SAR
+- Mid-range schools around 40K–60K SAR
+- Higher-range schools around 60K–80K SAR
+- Premium schools above 80K SAR
+
+Keep fee tabs working:
+- Full Year
+- Per Term
+- Monthly
+
+Use this dataset:
+
+JEDDAH
+
+1. Dar Al Rowad International Schools
+City: Jeddah
+Curriculum: American / National
+Grades: KG – Grade 12
+Languages: English, Arabic
+Location: Jeddah
+Description: A well-known private school offering balanced academics with a focus on discipline and foundational education.
+Tuition: 40,000 – 60,000 SAR
+Registration: 3,000 SAR
+Uniform: 2,000 SAR
+Transport: 6,000 SAR
+Activities: 2,000 SAR
+Total Estimated: 55,000 SAR
+Category: 40K–60K
+Tags: Mid-range, Value, Private
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+2. American International School of Jeddah
+City: Jeddah
+Curriculum: American / AP
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, Spanish
+Location: Al Mohammadiyah, Jeddah
+Description: A premium international school offering an American curriculum with strong academic preparation and university pathways.
+Tuition: 85,000 – 100,000 SAR
+Registration: 8,000 SAR
+Uniform: 3,000 SAR
+Transport: 10,000 SAR
+Activities: 5,000 SAR
+Total Estimated: 100,000 SAR
+Category: 80K+
+Tags: Premium, International, AP
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+3. British International School of Jeddah
+City: Jeddah
+Curriculum: British
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, French
+Location: Al Mohammadiyah, Jeddah
+Description: A premium British school known for structured academics, international exposure, and a strong school community.
+Tuition: 75,000 – 95,000 SAR
+Registration: 7,000 SAR
+Uniform: 3,000 SAR
+Transport: 9,000 SAR
+Activities: 4,000 SAR
+Total Estimated: 90,000 SAR
+Category: 80K+
+Tags: Premium, British, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+4. Jeddah Knowledge International School
+City: Jeddah
+Curriculum: American
+Grades: KG – Grade 12
+Languages: English, Arabic, French
+Location: Al Zahra, Jeddah
+Description: An international school offering strong academic programs with a balanced focus on curriculum, facilities, and student development.
+Tuition: 50,000 – 70,000 SAR
+Registration: 4,000 SAR
+Uniform: 2,500 SAR
+Transport: 7,000 SAR
+Activities: 3,000 SAR
+Total Estimated: 65,000 SAR
+Category: 60K–80K
+Tags: International, Academic
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+5. Al Waha International School
+City: Jeddah
+Curriculum: American
+Grades: KG – Grade 12
+Languages: English, Arabic
+Location: Jeddah
+Description: A more affordable private school option offering core academic programs in English and Arabic.
+Tuition: 20,000 – 30,000 SAR
+Registration: 2,000 SAR
+Uniform: 1,500 SAR
+Transport: 5,000 SAR
+Activities: 1,500 SAR
+Total Estimated: 28,000 SAR
+Category: 20K–30K
+Tags: Budget, Private
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+RIYADH
+
+6. American International School Riyadh
+City: Riyadh
+Curriculum: American / IB
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, Spanish, French
+Location: Riyadh
+Description: A highly regarded international school with strong academic standards and global university preparation.
+Tuition: 95,000 – 110,000 SAR
+Registration: 9,000 SAR
+Uniform: 3,500 SAR
+Transport: 11,000 SAR
+Activities: 5,000 SAR
+Total Estimated: 110,000 SAR
+Category: 80K+
+Tags: Elite, International, IB
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+7. British International School Riyadh
+City: Riyadh
+Curriculum: British
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, French
+Location: Riyadh
+Description: A leading British curriculum school serving international and local families with strong academic pathways.
+Tuition: 80,000 – 100,000 SAR
+Registration: 8,000 SAR
+Uniform: 3,000 SAR
+Transport: 10,000 SAR
+Activities: 5,000 SAR
+Total Estimated: 100,000 SAR
+Category: 80K+
+Tags: Premium, British, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+8. Advanced Learning Schools
+City: Riyadh
+Curriculum: American
+Grades: KG – Grade 12
+Languages: English, Arabic
+Location: Riyadh
+Description: A solid mid-range school offering strong academics and a stable private school environment.
+Tuition: 45,000 – 60,000 SAR
+Registration: 3,500 SAR
+Uniform: 2,500 SAR
+Transport: 7,000 SAR
+Activities: 2,500 SAR
+Total Estimated: 60,000 SAR
+Category: 40K–60K
+Tags: Mid-range, Private
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+9. SEK International School Riyadh
+City: Riyadh
+Curriculum: IB
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, Spanish
+Location: Riyadh
+Description: A modern IB school focused on international learning, inquiry-based education, and multilingual development.
+Tuition: 75,000 – 95,000 SAR
+Registration: 7,000 SAR
+Uniform: 3,000 SAR
+Transport: 9,000 SAR
+Activities: 4,000 SAR
+Total Estimated: 90,000 SAR
+Category: 80K+
+Tags: IB, Premium, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+10. Al Faris International School
+City: Riyadh
+Curriculum: American
+Grades: KG – Grade 12
+Languages: English, Arabic
+Location: Riyadh
+Description: A budget-conscious international school option offering English-based education at a more accessible cost.
+Tuition: 20,000 – 30,000 SAR
+Registration: 2,000 SAR
+Uniform: 1,500 SAR
+Transport: 5,000 SAR
+Activities: 1,500 SAR
+Total Estimated: 28,000 SAR
+Category: 20K–30K
+Tags: Budget, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+DAMMAM
+
+11. ISG Dammam
+City: Dammam
+Curriculum: American
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, Spanish
+Location: Dammam
+Description: A well-known international school offering American-style education and a diverse student community.
+Tuition: 70,000 – 90,000 SAR
+Registration: 6,000 SAR
+Uniform: 3,000 SAR
+Transport: 9,000 SAR
+Activities: 4,000 SAR
+Total Estimated: 85,000 SAR
+Category: 60K–80K
+Tags: International, American
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+12. Dhahran British Grammar School
+City: Dammam / Dhahran
+Curriculum: British
+Grades: Pre-K – Grade 12
+Languages: English, Arabic, French
+Location: Dhahran
+Description: A long-established British school serving families in the Eastern Province with structured academic programs.
+Tuition: 70,000 – 90,000 SAR
+Registration: 6,000 SAR
+Uniform: 3,000 SAR
+Transport: 9,000 SAR
+Activities: 4,000 SAR
+Total Estimated: 85,000 SAR
+Category: 60K–80K
+Tags: British, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+13. Al Hussan International School
+City: Dammam
+Curriculum: American
+Grades: KG – Grade 12
+Languages: English, Arabic
+Location: Dammam
+Description: A strong regional private school offering international education with good academic value.
+Tuition: 35,000 – 50,000 SAR
+Registration: 3,000 SAR
+Uniform: 2,000 SAR
+Transport: 6,000 SAR
+Activities: 2,000 SAR
+Total Estimated: 50,000 SAR
+Category: 40K–60K
+Tags: Value, Private, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+14. Al Manahil Private School
+City: Dammam
+Curriculum: National
+Grades: KG – Grade 12
+Languages: Arabic, English
+Location: Dammam
+Description: A budget private school focused on accessible education, core academics, and basic school services.
+Tuition: 18,000 – 25,000 SAR
+Registration: 2,000 SAR
+Uniform: 1,500 SAR
+Transport: 5,000 SAR
+Activities: 1,000 SAR
+Total Estimated: 25,000 SAR
+Category: 20K–30K
+Tags: Budget, Private
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+15. Future International School Dammam
+City: Dammam
+Curriculum: American
+Grades: KG – Grade 12
+Languages: English, Arabic
+Location: Dammam
+Description: A growing private school offering English-based education, steady academics, and accessible fee options.
+Tuition: 45,000 – 65,000 SAR
+Registration: 3,500 SAR
+Uniform: 2,500 SAR
+Transport: 7,000 SAR
+Activities: 2,500 SAR
+Total Estimated: 60,000 SAR
+Category: 40K–60K
+Tags: Mid-range, International
+Fit Score: “calculate the rate score here based on the questions asked after log-in”
+
+--------------------------------
+2. PROFILE PAGE UPDATES
+--------------------------------
+
+Update the Profile page only.
+
+Add these sections:
+
+A. Account Section
+Include:
+- Full Name
+- Phone Number
+- Email
+- City dropdown: Jeddah, Riyadh, Dammam
+
+B. School Preferences Section
+Include:
+- Preferred city
+- Budget range
+- Curriculum preference
+- Grade level
+- Language preference
+- Special needs support option
+
+C. Bookings Section (that shows bookings for both visits and apply now (when booking for the test))
+Add a new section called “Bookings”.
+
+This section should show:
+- Previous bookings
+- Current upcoming bookings
+- School name
+- Visit date
+- Visit time
+- Booking status
+
+For current bookings, allow the user to:
+- Modify booking date
+- Modify booking time
+- Cancel booking
+
+Keep the design consistent with the existing Profile page.
+
+--------------------------------
+3. SETTINGS SECTION
+--------------------------------
+
+Add app settings inside the Profile page.
+
+Include:
+
+Appearance setting:
+- Light Mode
+- Dark Mode
+- Use Device Settings
+
+Language setting:
+- English
+- Arabic (just as a button)
+- Indian (just as a button)
+- French (just as a button)
+- Spanish (just as a button)
+
+
+--------------------------------
+4. BOOKING FUNCTIONALITY
+--------------------------------
+
+Keep the existing Schedule Visit button.
+
+When the user schedules a school visit:
+- Save the booking
+- Show it in the Profile page under Bookings
+- Include school name, visit date, visit time, and booking status
+- Allow modifying date and time
+- Allow cancellation
+
+Booking statuses:
+- Upcoming
+- Updated
+- Cancelled
+- Completed
+
+Do not remove Apply Now.
+Do not remove Schedule Visit.
+
+--------------------------------
+5. DARK MODE THEME
+--------------------------------
+
+Modify ONLY the dark mode theme.
+
+When the user presses the Dark Mode toggle, the entire application interface must switch from the current light mode colors to this dark mode palette.
+
+Use these exact dark mode color codes:
+
+Primary Orange: #FF9A47
+Secondary Orange: #FFB547
+Accent Yellow: #FFD166
+Primary Navy: #1E3A5F
+Secondary Teal: #3A7D94
+
+Semantic colors:
+Success: #22C55E
+Warning: #FBBF24
+Error: #F87171
+Info: #60A5FA
+Dark Background: #0F172A
+Medium Surface: #1F2937
+Text Primary: #F9FAFB
+Text Secondary: #9CA3AF
+
+Apply dark mode to:
+- Home page
+- School details page
+- Kindergarten details page
+- AI chatbot page
+- Favorites page
+- Alerts page
+- Account/Profile page
+- Login and sign-up pages
+- Cards
+- Buttons
+- Navigation bar
+- Bottom menu
+- Filters
+- Dropdown menus
+- Search bar
+- Reviews section
+- Fees and costs section
+- Schedule visit section
+- Apply now section
+- Popups and modals
+
+Dark mode rules:
+- Main app background: #0F172A
+- Cards and sections: #1F2937
+- Main text: #F9FAFB
+- Secondary text: #9CA3AF
+- Primary buttons: #FF9A47
+- Secondary buttons and highlights: #FFB547
+- Ratings, stars, progress bars, fit score highlights: #FFD166 or #FF9A47
+- Icons and active navigation items: #FF9A47
+- Borders should be soft and slightly lighter than the background
+- Keep strong contrast and readability
+- Dark mode should look professional, clean, warm, and consistent with the Schoolo brand
+
+Add appearance options:
+- Light Mode
+- Dark Mode
+- Use Device Default Settings 
+
+Make the toggle/control functional as much as possible.
+--------------------------------
+6. ALERTS PAGE UPDATES
+--------------------------------
+
+ADD to the Alerts page to include booking-related notifications.
+
+Connect alerts to booking actions when possible:
+- When user books a school visit, show a booking alert
+- When user modifies a booking, show an update alert
+- When user cancels a booking, show a cancellation alert
+
+Keep the Alerts page design the same.
+
+--------------------------------
+FINAL RULES
+--------------------------------
+
+- Keep all existing school card and detail page designs the same.
+- Only update the school data and the requested Profile, Settings, Booking, Alerts, and Dark Mode functionality.
+- Make sure fee tabs still work: Full Year, Per Term, Monthly.
+- Keep all prices in SAR.
+- Do not remove buttons such as Schedule Visit or Apply Now.
+- Do not redesign the app.
+- Do not remove existing features.
+- Do not break navigation.
+- Make the app stable and functional after changes.
