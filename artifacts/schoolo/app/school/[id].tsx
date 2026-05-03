@@ -26,6 +26,46 @@ import { useColors } from "@/hooks/useColors";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
+const FACILITY_IMAGE_MAP: Record<string, string> = {
+  Pool: "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=300&h=200&fit=crop",
+  Lab: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=300&h=200&fit=crop",
+  Library: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop",
+  Cafeteria: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=300&h=200&fit=crop",
+  Mosque: "https://images.unsplash.com/photo-1548013146-72479768bada?w=300&h=200&fit=crop",
+  Computer: "https://images.unsplash.com/photo-1588702547923-7408028a12fd?w=300&h=200&fit=crop",
+  Court: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=300&h=200&fit=crop",
+  Field: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=300&h=200&fit=crop",
+  Pitch: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=300&h=200&fit=crop",
+  Gymnasium: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop",
+  Gym: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop",
+  Theatre: "https://images.unsplash.com/photo-1503095396549-807759245b35?w=300&h=200&fit=crop",
+  Auditorium: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=300&h=200&fit=crop",
+  "Art Studio": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=300&h=200&fit=crop",
+  "Art Room": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=300&h=200&fit=crop",
+  Tennis: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=300&h=200&fit=crop",
+  Design: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300&h=200&fit=crop",
+  Recording: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=300&h=200&fit=crop",
+  Performing: "https://images.unsplash.com/photo-1503095396549-807759245b35?w=300&h=200&fit=crop",
+  Sports: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=300&h=200&fit=crop",
+};
+
+function getFacilityImageUri(facility: string): string {
+  for (const [key, url] of Object.entries(FACILITY_IMAGE_MAP)) {
+    if (facility.includes(key)) return url;
+  }
+  return "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=300&h=200&fit=crop";
+}
+
+function getSchoolInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter((w) => w.length > 2)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
+}
+
 type PaymentMode = "annual" | "term" | "monthly";
 type ApplyStep = 1 | 2 | 3;
 
@@ -196,6 +236,9 @@ export default function SchoolDetailScreen() {
           {/* Identity */}
           <View style={styles.identityBlock}>
             <View style={styles.identityTop}>
+              <View style={[styles.schoolLogoMini, { backgroundColor: school.color }]}>
+                <Text style={styles.schoolLogoMiniText}>{getSchoolInitials(school.name)}</Text>
+              </View>
               <View style={{ flex: 1 }}>
                 <Text style={[styles.schoolName, { color: colors.foreground }]}>{school.name}</Text>
                 <Text style={[styles.schoolNameAr, { color: colors.mutedForeground }]}>{school.nameAr}</Text>
@@ -217,7 +260,7 @@ export default function SchoolDetailScreen() {
             </TouchableOpacity>
 
             <View style={styles.badgeRow}>
-              <View style={[styles.chip, { backgroundColor: colors.muted }]}><Text style={[styles.chipText, { color: colors.navy }]}>{school.curriculum}</Text></View>
+              <View style={[styles.chip, { backgroundColor: colors.muted }]}><Text style={[styles.chipText, { color: colors.foreground }]}>{school.curriculum}</Text></View>
               <View style={[styles.chip, { backgroundColor: "#EEF5FA" }]}><Text style={[styles.chipText, { color: colors.secondary }]}>{school.type === "international" ? "International" : "Private"}</Text></View>
               <View style={[styles.chip, { backgroundColor: "#FEF0E0" }]}><Text style={[styles.chipText, { color: colors.primary }]}>{school.location.city}</Text></View>
               <View style={[styles.chip, { backgroundColor: "#F5F5F5" }]}><Text style={[styles.chipText, { color: "#555" }]}>{school.grades}</Text></View>
@@ -387,12 +430,12 @@ export default function SchoolDetailScreen() {
           <SectionCard title="Facilities" icon="business-outline">
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={{ flexDirection: "row", gap: 10, paddingBottom: 4 }}>
-                {images.map((src, i) => (
-                  <TouchableOpacity key={i} onPress={() => setGalleryModalIndex(i)} activeOpacity={0.85}>
-                    <Image source={src} style={[styles.facilityPhoto, { borderRadius: 10 }]} contentFit="cover" />
+                {school.facilities.map((facility, i) => (
+                  <TouchableOpacity key={i} activeOpacity={0.85}>
+                    <Image source={{ uri: getFacilityImageUri(facility) }} style={[styles.facilityPhoto, { borderRadius: 10 }]} contentFit="cover" />
                     <View style={[styles.facilityPhotoLabel, { backgroundColor: "rgba(19,47,69,0.7)" }]}>
                       <Text style={styles.facilityPhotoLabelText} numberOfLines={1}>
-                        {school.facilities[i] ?? "Campus"}
+                        {facility}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -428,6 +471,39 @@ export default function SchoolDetailScreen() {
             </View>
           </SectionCard>
 
+          {/* Contact Information */}
+          {school.contact && (
+            <SectionCard title="Contact Information" icon="call-outline">
+              {school.contact.phone && (
+                <View style={[styles.contactRow, { borderBottomColor: colors.border, borderBottomWidth: school.contact.email ? 1 : 0 }]}>
+                  <Ionicons name="call-outline" size={16} color={colors.primary} />
+                  <Text style={[styles.contactText, { color: colors.foreground }]}>{school.contact.phone}</Text>
+                </View>
+              )}
+              {school.contact.email && (
+                <View style={[styles.contactRow, { borderBottomColor: colors.border, borderBottomWidth: school.contact.admissionsEmail || school.contact.website ? 1 : 0 }]}>
+                  <Ionicons name="mail-outline" size={16} color={colors.primary} />
+                  <Text style={[styles.contactText, { color: colors.foreground }]}>{school.contact.email}</Text>
+                </View>
+              )}
+              {school.contact.admissionsEmail && (
+                <View style={[styles.contactRow, { borderBottomColor: colors.border, borderBottomWidth: school.contact.website ? 1 : 0 }]}>
+                  <Ionicons name="document-text-outline" size={16} color={colors.primary} />
+                  <View>
+                    <Text style={[styles.contactLabel, { color: colors.mutedForeground }]}>Admissions</Text>
+                    <Text style={[styles.contactText, { color: colors.foreground }]}>{school.contact.admissionsEmail}</Text>
+                  </View>
+                </View>
+              )}
+              {school.contact.website && (
+                <View style={[styles.contactRow, { borderBottomWidth: 0 }]}>
+                  <Ionicons name="globe-outline" size={16} color={colors.primary} />
+                  <Text style={[styles.contactText, { color: colors.primary }]}>{school.contact.website}</Text>
+                </View>
+              )}
+            </SectionCard>
+          )}
+
           {/* Schedule Visit */}
           <SectionCard title="Visit & Schedule" icon="calendar-outline" actionLabel="Book Visit" onAction={() => setShowScheduleModal(true)}>
             <Text style={[styles.scheduleInfo, { color: colors.mutedForeground }]}>
@@ -452,9 +528,9 @@ export default function SchoolDetailScreen() {
             <View style={[styles.infoCard, { backgroundColor: "#EDFBF3", borderColor: "#B8EDD4", borderRadius: colors.radius }]}>
               <View style={styles.infoCardHeader}>
                 <Ionicons name="people" size={18} color="#16a34a" />
-                <Text style={[styles.infoCardTitle, { color: "#15803d" }]}>Siblings Discount Available</Text>
+                <Text style={[styles.infoCardTitle, { color: colors.foreground }]}>Siblings Discount Available</Text>
               </View>
-              <Text style={[styles.infoCardBody, { color: "#166534" }]}>
+              <Text style={[styles.infoCardBody, { color: colors.foreground }]}>
                 Enrol two or more children and receive a {school.siblingsDiscountPercent}% discount on the second child's fees — saving up to SAR {Math.round(school.fees.totalEstimate * school.siblingsDiscountPercent / 100).toLocaleString()} per year.
               </Text>
             </View>
@@ -465,9 +541,9 @@ export default function SchoolDetailScreen() {
             <View style={[styles.infoCard, { backgroundColor: "#EEF5FA", borderColor: "#B8D4E8", borderRadius: colors.radius }]}>
               <View style={styles.infoCardHeader}>
                 <Ionicons name="heart-circle-outline" size={18} color="#1d4ed8" />
-                <Text style={[styles.infoCardTitle, { color: "#1d4ed8" }]}>Special Needs Support</Text>
+                <Text style={[styles.infoCardTitle, { color: colors.foreground }]}>Special Needs Support</Text>
               </View>
-              <Text style={[styles.infoCardBody, { color: "#1e40af" }]}>
+              <Text style={[styles.infoCardBody, { color: colors.foreground }]}>
                 This school has a dedicated learning support department with trained specialists. Contact the admissions team to discuss your child's specific requirements before applying.
               </Text>
             </View>
@@ -626,8 +702,8 @@ export default function SchoolDetailScreen() {
                   >
                     <Ionicons name="calendar-outline" size={18} color={slot.available ? colors.primary : colors.mutedForeground} />
                     <View style={{ flex: 1 }}>
-                      <Text style={[styles.slotDate, { color: colors.foreground }]}>{slot.date}</Text>
-                      <Text style={[styles.slotTime, { color: colors.mutedForeground }]}>{slot.time}</Text>
+                      <Text style={[styles.slotDate, { color: selectedSlot?.date === slot.date && selectedSlot?.time === slot.time ? "#132F45" : colors.foreground }]}>{slot.date}</Text>
+                      <Text style={[styles.slotTime, { color: selectedSlot?.date === slot.date && selectedSlot?.time === slot.time ? "#5A5A5A" : colors.mutedForeground }]}>{slot.time}</Text>
                     </View>
                     {slot.available ? (
                       <View style={[styles.slotBadge, { backgroundColor: "#EDFBF3" }]}>
@@ -773,8 +849,8 @@ export default function SchoolDetailScreen() {
                       >
                         <Ionicons name="calendar-outline" size={18} color={slot.available ? colors.primary : colors.mutedForeground} />
                         <View style={{ flex: 1 }}>
-                          <Text style={[styles.slotDate, { color: colors.foreground }]}>{slot.date}</Text>
-                          <Text style={[styles.slotTime, { color: colors.mutedForeground }]}>{slot.time}</Text>
+                          <Text style={[styles.slotDate, { color: applySlot?.date === slot.date && applySlot?.time === slot.time ? "#132F45" : colors.foreground }]}>{slot.date}</Text>
+                          <Text style={[styles.slotTime, { color: applySlot?.date === slot.date && applySlot?.time === slot.time ? "#5A5A5A" : colors.mutedForeground }]}>{slot.time}</Text>
                         </View>
                         {slot.available ? (
                           <View style={[styles.slotBadge, { backgroundColor: "#EDFBF3" }]}>
@@ -895,6 +971,8 @@ const styles = StyleSheet.create({
   body: { padding: 20, gap: 16 },
   identityBlock: { gap: 10 },
   identityTop: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
+  schoolLogoMini: { width: 44, height: 44, borderRadius: 10, alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  schoolLogoMiniText: { color: "#FFF", fontSize: 15, fontWeight: "800", letterSpacing: 0.5 },
   schoolName: { fontSize: 24, fontWeight: "800", letterSpacing: -0.5, lineHeight: 30 },
   schoolNameAr: { fontSize: 14, marginTop: 2 },
   fitBadge: { flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, flexShrink: 0 },
@@ -963,6 +1041,9 @@ const styles = StyleSheet.create({
   facilityPhoto: { width: 130, height: 90 },
   facilityPhotoLabel: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 6, paddingVertical: 4, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 },
   facilityPhotoLabelText: { color: "#FFF", fontSize: 10, fontWeight: "600" },
+  contactRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 10 },
+  contactText: { fontSize: 14, fontWeight: "500", flex: 1 },
+  contactLabel: { fontSize: 11, fontWeight: "500", marginBottom: 2 },
   facilityGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   facilityChip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, paddingVertical: 7 },
   facilityText: { fontSize: 12, fontWeight: "500" },

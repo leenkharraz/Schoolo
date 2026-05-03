@@ -310,7 +310,7 @@ export default function OnboardingScreen() {
               >
                 <Ionicons name={opt.icon as any} size={28} color={answers.specialNeeds === opt.value ? colors.primary : colors.mutedForeground} />
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.bigOptionLabel, { color: answers.specialNeeds === opt.value ? colors.foreground : colors.foreground }]}>
+                  <Text style={[styles.bigOptionLabel, { color: answers.specialNeeds === opt.value ? "#132F45" : colors.foreground }]}>
                     {opt.label}
                   </Text>
                   <Text style={[styles.bigOptionSub, { color: colors.mutedForeground }]}>{opt.sub}</Text>
@@ -356,7 +356,7 @@ export default function OnboardingScreen() {
               >
                 <Ionicons name={t.icon as any} size={28} color={answers.preferredSchoolType === t.id ? colors.primary : colors.mutedForeground} />
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.bigOptionLabel, { color: colors.foreground }]}>{t.label}</Text>
+                  <Text style={[styles.bigOptionLabel, { color: answers.preferredSchoolType === t.id ? "#132F45" : colors.foreground }]}>{t.label}</Text>
                 </View>
                 {answers.preferredSchoolType === t.id && (
                   <Ionicons name="checkmark-circle" size={22} color={colors.primary} />

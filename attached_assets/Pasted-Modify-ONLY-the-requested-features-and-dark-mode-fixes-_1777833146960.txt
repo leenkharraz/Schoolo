@@ -1,0 +1,94 @@
+Modify ONLY the requested features and dark mode fixes in the existing Schoolo app.
+
+Do NOT change:
+- UI structure
+- Layout
+- Main design
+- Navigation
+- Buttons
+- Pages
+- Components
+- Existing app logic unless required for the requested fixes
+- School pictures displayed above the school name
+
+Keep the app visually consistent with the current Schoolo design.
+
+Required modifications:
+
+1. Add school contact information
+For every school profile, add:
+- Email: ******@gmail.com
+- Phone: 9200******
+Display this contact information clearly in the school details/profile page.
+
+2. AI Chat page
+On the AI chat page, add a chat input bar at the bottom.
+Important:
+- The bar is only visual for now.
+- It does not need to send messages.
+- It does not need typing functionality.
+- It should only show that the chat bar exists.
+
+3. Number of children dynamic fields
+When the parent enters or selects the number of children:
+- Automatically show new input cells based on the selected number.
+- For each child, the parent must be able to select:
+  - Age
+  - Grade
+Example:
+If the parent selects 3 children, show 3 separate child sections:
+Child 1: Age + Grade
+Child 2: Age + Grade
+Child 3: Age + Grade
+
+4. Facility pictures
+Inside each school profile, in the Facilities section:
+- Generate or display facility pictures based on the facilities available in that school.
+- Each facility image should match the facility name.
+Example:
+If the school has Library, Science Lab, Playground, and Sports Hall, show suitable facility pictures for those facilities.
+Keep the same facility section design.
+
+5. School logo placement
+On the school profile page:
+- Add the school logo on the left side directly next to the school name.
+- The logo must appear beside the name, not above it.
+- Keep the school pictures above the school name exactly as they are.
+- Do not replace or remove the school pictures.
+
+Dark mode fixes:
+
+1. Curriculum visibility in school page
+In dark mode, the curriculum text on the school page is not visible.
+Fix it by changing the curriculum text color to white.
+Keep the existing background shape behind the curriculum exactly as it is.
+
+2. Login questions selected answers
+After login, the parent is asked questions including:
+- Special Needs Support
+- School Type Preference
+
+In dark mode, after pressing/selecting an answer, the selected answer text does not show.
+Fix it by changing the selected answer text color to a darker readable color after clicking.
+
+3. Sibling discount text
+In dark mode, the sibling discount detection text does not show.
+Fix it by changing the sibling discount text color to white.
+
+4. Booking selected answers
+In dark mode, when the parent selects an answer in:
+- Booking a visit
+- Booking a placement test
+
+The selected answer text does not show.
+Fix it by changing the selected answer text color to a darker readable color after clicking.
+
+5. City text in top right
+In dark mode, change the city text in the top right to white.
+
+Important:
+- Apply these fixes only in dark mode where specified.
+- Do not affect the light mode design.
+- Keep all colors, spacing, cards, layout, and structure consistent with the existing Schoolo app.
+- Do not redesign the application.
+- Only fix the requested issues and add the requested small features.

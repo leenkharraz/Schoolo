@@ -273,7 +273,7 @@ export default function HomeScreen() {
               style={[styles.locationChip, { backgroundColor: colors.muted, borderColor: colors.border }]}
             >
               <Ionicons name="location-sharp" size={13} color={colors.primary} />
-              <Text style={[styles.locationText, { color: colors.secondary }]}>
+              <Text style={[styles.locationText, { color: colors.foreground }]}>
                 {selectedCity === "All" ? "All Cities" : selectedCity}
               </Text>
               <Ionicons name="chevron-down" size={12} color={colors.mutedForeground} />

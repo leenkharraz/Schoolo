@@ -25,6 +25,7 @@ const CURRICULA = ["Any", "Saudi National", "British", "American", "IB", "Indian
 const PREF_LANGUAGES = ["None", "French", "Spanish", "Mandarin", "German", "Portuguese"];
 const ACTIVITIES = ["Football", "Basketball", "Swimming", "Tennis", "Arts & Crafts", "Music", "Drama", "Robotics", "Chess", "Coding", "Quran"];
 const GRADES = ["KG1", "KG2", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"];
+const AGES = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 const SCHOOL_TYPES = ["any", "private", "international"];
 const DISTANCES = [2, 5, 10, 20, 50];
 const APP_LANGUAGES = ["English", "Arabic", "Hindi", "French", "Spanish"];
@@ -80,6 +81,23 @@ export default function ProfileScreen() {
   const [modifySlot, setModifySlot] = useState<AppointmentSlot | null>(null);
 
   const scheduleSlots = getScheduleSlots();
+
+  const [childrenDetails, setChildrenDetails] = useState<Array<{ age: number; grade: string }>>(
+    () => Array.from({ length: Math.max(user.childrenCount || 1, 1) }, (_, i) => ({
+      age: i === 0 ? (user.childAge || 8) : 8,
+      grade: i === 0 ? (user.childGrade || "Grade 3") : "Grade 3",
+    }))
+  );
+
+  const updateChildrenCount = (count: number) => {
+    setDraft((p) => ({ ...p, childrenCount: count }));
+    setChildrenDetails((prev) => {
+      if (count > prev.length) {
+        return [...prev, ...Array.from({ length: count - prev.length }, () => ({ age: 8, grade: "Grade 3" }))];
+      }
+      return prev.slice(0, count);
+    });
+  };
 
   const initials = user.name
     ? user.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase()
@@ -221,7 +239,7 @@ export default function ProfileScreen() {
                 {[1, 2, 3, 4, "5+"].map((n) => (
                   <TouchableOpacity
                     key={String(n)}
-                    onPress={() => setDraft((p) => ({ ...p, childrenCount: typeof n === "number" ? n : 5 }))}
+                    onPress={() => updateChildrenCount(typeof n === "number" ? n : 5)}
                     style={[styles.counter, { backgroundColor: draft.childrenCount === (typeof n === "number" ? n : 5) ? colors.primary : colors.muted, borderRadius: 8 }]}
                   >
                     <Text style={{ color: draft.childrenCount === (typeof n === "number" ? n : 5) ? "#FFF" : colors.foreground, fontWeight: "600", fontSize: 14 }}>{n}</Text>
@@ -232,6 +250,41 @@ export default function ProfileScreen() {
               <Text style={[styles.fieldText, { color: colors.foreground }]}>{user.childrenCount}</Text>
             )}
           </FieldRow>
+
+          {editing && Array.from({ length: draft.childrenCount || 1 }, (_, i) => (
+            <React.Fragment key={i}>
+              <FieldRow label={`Child ${i + 1} — Age`}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={styles.pillRow}>
+                    {AGES.map((age) => (
+                      <TouchableOpacity
+                        key={age}
+                        onPress={() => setChildrenDetails((prev) => prev.map((c, idx) => idx === i ? { ...c, age } : c))}
+                        style={[styles.counter, { backgroundColor: (childrenDetails[i]?.age ?? 8) === age ? colors.primary : colors.muted, borderRadius: 8 }]}
+                      >
+                        <Text style={{ color: (childrenDetails[i]?.age ?? 8) === age ? "#FFF" : colors.foreground, fontWeight: "600", fontSize: 13 }}>{age}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </FieldRow>
+              <FieldRow label={`Child ${i + 1} — Grade`}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={styles.pillRow}>
+                    {GRADES.map((g) => (
+                      <TouchableOpacity
+                        key={g}
+                        onPress={() => setChildrenDetails((prev) => prev.map((c, idx) => idx === i ? { ...c, grade: g } : c))}
+                        style={[styles.pill, { backgroundColor: (childrenDetails[i]?.grade ?? "Grade 3") === g ? colors.primary : colors.muted, borderRadius: 999 }]}
+                      >
+                        <Text style={[styles.pillText, { color: (childrenDetails[i]?.grade ?? "Grade 3") === g ? "#FFF" : colors.foreground }]}>{g}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              </FieldRow>
+            </React.Fragment>
+          ))}
 
           <FieldRow label="Child Grade">
             {editing ? (

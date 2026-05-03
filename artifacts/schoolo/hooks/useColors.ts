@@ -14,6 +14,7 @@ export function useColors() {
       ? "light"
       : (systemScheme ?? "light");
 
-  const palette = effective === "dark" ? colors.dark : colors.light;
-  return { ...palette, radius: colors.radius };
+  const isDark = effective === "dark";
+  const palette = isDark ? colors.dark : colors.light;
+  return { ...palette, radius: colors.radius, isDark };
 }
