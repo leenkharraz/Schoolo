@@ -9,6 +9,7 @@ import { Platform, StyleSheet, View, useColorScheme } from "react-native";
 
 import { useApp } from "@/context/AppContext";
 import { useColors } from "@/hooks/useColors";
+import { useAppearanceMode } from "@/store/theme";
 
 function NativeTabLayout() {
   return (
@@ -39,8 +40,11 @@ function NativeTabLayout() {
 
 function ClassicTabLayout() {
   const colors = useColors();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
+  const systemScheme = useColorScheme();
+  const [appearanceMode] = useAppearanceMode();
+  const isDark =
+    appearanceMode === "dark" ||
+    (appearanceMode === "device" && systemScheme === "dark");
   const isIOS = Platform.OS === "ios";
   const isWeb = Platform.OS === "web";
   const { unreadAlertCount } = useApp();

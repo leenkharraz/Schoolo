@@ -22,6 +22,9 @@ const ALERT_ICONS: Record<Alert["type"], { name: string; color: string; bg: stri
   match: { name: "sparkles", color: "#22c55e", bg: "#EDFBF3" },
   fee_update: { name: "trending-up", color: "#EAA23A", bg: "#FEF7E7" },
   new_school: { name: "star", color: "#F3B940", bg: "#FFFBEB" },
+  booking: { name: "check-circle", color: "#22c55e", bg: "#EDFBF3" },
+  booking_update: { name: "edit-2", color: "#2563eb", bg: "#EEF5FF" },
+  booking_cancel: { name: "x-circle", color: "#dc2626", bg: "#FEE2E2" },
 };
 
 function timeAgo(ts: number): string {

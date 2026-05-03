@@ -1,0 +1,128 @@
+Modify ONLY the requested parts of the existing Schoolo app.
+
+Do NOT redesign the app.
+Do NOT change the existing layout, spacing, border radius, typography, navigation structure, school card design, school detail page design, or app logic unless required for the requested features.
+Do NOT remove existing buttons or features.
+Do NOT break navigation.
+Keep all prices in SAR.
+
+Requested updates:
+1. Add booking management
+2. Add dark mode theme
+3. Update Alerts page with booking notifications
+
+--------------------------------
+1. BOOKING FUNCTIONALITY
+--------------------------------
+
+Keep the existing Schedule Visit button.
+
+When the user schedules a school visit:
+- Save the booking
+- Show it in the Profile page under Bookings
+- Include school name, visit date, visit time, and booking status
+- Allow modifying date and time
+- Allow cancellation
+
+Booking statuses:
+- Upcoming
+- Updated
+- Cancelled
+- Completed
+
+Do not remove Apply Now.
+Do not remove Schedule Visit.
+
+--------------------------------
+2. DARK MODE THEME
+--------------------------------
+
+Modify ONLY the dark mode theme.
+
+When the user presses the Dark Mode toggle, the entire application interface must switch from the current light mode colors to this dark mode palette.
+
+Use these exact dark mode color codes:
+
+Primary Orange: #FF9A47
+Secondary Orange: #FFB547
+Accent Yellow: #FFD166
+Primary Navy: #1E3A5F
+Secondary Teal: #3A7D94
+
+Semantic colors:
+Success: #22C55E
+Warning: #FBBF24
+Error: #F87171
+Info: #60A5FA
+Dark Background: #0F172A
+Medium Surface: #1F2937
+Text Primary: #F9FAFB
+Text Secondary: #9CA3AF
+
+Apply dark mode to:
+- Home page
+- School details page
+- Kindergarten details page
+- AI chatbot page
+- Favorites page
+- Alerts page
+- Account/Profile page
+- Login and sign-up pages
+- Cards
+- Buttons
+- Navigation bar
+- Bottom menu
+- Filters
+- Dropdown menus
+- Search bar
+- Reviews section
+- Fees and costs section
+- Schedule visit section
+- Apply now section
+- Popups and modals
+
+Dark mode rules:
+- Main app background: #0F172A
+- Cards and sections: #1F2937
+- Main text: #F9FAFB
+- Secondary text: #9CA3AF
+- Primary buttons: #FF9A47
+- Secondary buttons and highlights: #FFB547
+- Ratings, stars, progress bars, fit score highlights: #FFD166 or #FF9A47
+- Icons and active navigation items: #FF9A47
+- Borders should be soft and slightly lighter than the background
+- Keep strong contrast and readability
+- Dark mode should look professional, clean, warm, and consistent with the Schoolo brand
+
+Add appearance options:
+- Light Mode
+- Dark Mode
+- Use Device Default Settings 
+
+Make the toggle/control functional as much as possible.
+--------------------------------
+3. ALERTS PAGE UPDATES
+--------------------------------
+
+ADD to the Alerts page to include booking-related notifications.
+
+Connect alerts to booking actions when possible:
+- When user books a school visit, show a booking alert
+- When user modifies a booking, show an update alert
+- When user cancels a booking, show a cancellation alert
+
+Keep the Alerts page design the same.
+
+--------------------------------
+FINAL RULES
+--------------------------------
+
+- Keep all existing school card and detail page designs the same.
+- Only update the school data and the requested Profile, Settings, Booking, Alerts, and Dark Mode functionality.
+- Make sure fee tabs still work: Full Year, Per Term, Monthly.
+- Keep all prices in SAR.
+- Do not remove buttons such as Schedule Visit or Apply Now.
+- Do not redesign the app.
+- Do not remove existing features.
+- Do not break navigation.
+- Make the app stable and functional after changes.

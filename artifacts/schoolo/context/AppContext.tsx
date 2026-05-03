@@ -54,7 +54,7 @@ export interface Alert {
   timestamp: number;
   read: boolean;
   schoolId?: string;
-  type: "deadline" | "new_school" | "open_day" | "fee_update" | "match";
+  type: "deadline" | "new_school" | "open_day" | "fee_update" | "match" | "booking" | "booking_update" | "booking_cancel";
 }
 
 type SortOrder = "featured" | "price_asc" | "price_desc" | "rating";
@@ -293,7 +293,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const addBooking = useCallback((booking: Booking) => {
     setState((prev) => {
       const bookings = [...prev.bookings, booking];
-      const next = { ...prev, bookings };
+      const newAlert: Alert = {
+        id: `booking-${booking.id}`,
+        title: `${booking.type === "visit" ? "Visit Booked" : "Test Booked"}: ${booking.schoolName}`,
+        body: `Your ${booking.type === "visit" ? "school visit" : "placement test"} is confirmed for ${booking.date} at ${booking.time}.`,
+        timestamp: Date.now(),
+        read: false,
+        schoolId: booking.schoolId,
+        type: "booking",
+      };
+      const alerts = [newAlert, ...prev.alerts];
+      const next = { ...prev, bookings, alerts };
       save(next);
       return next;
     });
@@ -304,7 +314,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const bookings = prev.bookings.map((b) =>
         b.id === id ? { ...b, ...updates } : b
       );
-      const next = { ...prev, bookings };
+      const booking = prev.bookings.find((b) => b.id === id);
+      let alerts = prev.alerts;
+      if (booking && (updates.date || updates.time)) {
+        const updateAlert: Alert = {
+          id: `booking-update-${id}-${Date.now()}`,
+          title: `Booking Rescheduled: ${booking.schoolName}`,
+          body: `Your booking has been moved to ${updates.date ?? booking.date} at ${updates.time ?? booking.time}.`,
+          timestamp: Date.now(),
+          read: false,
+          schoolId: booking.schoolId,
+          type: "booking_update",
+        };
+        alerts = [updateAlert, ...prev.alerts];
+      }
+      const next = { ...prev, bookings, alerts };
       save(next);
       return next;
     });
@@ -315,7 +339,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const bookings = prev.bookings.map((b) =>
         b.id === id ? { ...b, status: "cancelled" as const } : b
       );
-      const next = { ...prev, bookings };
+      const booking = prev.bookings.find((b) => b.id === id);
+      let alerts = prev.alerts;
+      if (booking) {
+        const cancelAlert: Alert = {
+          id: `booking-cancel-${id}-${Date.now()}`,
+          title: `Booking Cancelled: ${booking.schoolName}`,
+          body: `Your ${booking.type === "visit" ? "school visit" : "placement test"} on ${booking.date} at ${booking.time} has been cancelled.`,
+          timestamp: Date.now(),
+          read: false,
+          schoolId: booking.schoolId,
+          type: "booking_cancel",
+        };
+        alerts = [cancelAlert, ...prev.alerts];
+      }
+      const next = { ...prev, bookings, alerts };
       save(next);
       return next;
     });
