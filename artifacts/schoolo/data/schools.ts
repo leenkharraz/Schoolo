@@ -44,6 +44,8 @@ export interface School {
     admissionsEmail?: string;
     website?: string;
   };
+  registrationOpenDate: string;
+  busService: boolean;
 }
 
 export const SCHOOLS: School[] = [
@@ -88,6 +90,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@darrowad.edu.sa",
       website: "www.darrowad.edu.sa",
     },
+    registrationOpenDate: "1 April 2026",
+    busService: true,
   },
   {
     id: "j2",
@@ -129,6 +133,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@aisj.edu.sa",
       website: "www.aisj.edu.sa",
     },
+    registrationOpenDate: "15 March 2026",
+    busService: true,
   },
   {
     id: "j3",
@@ -170,6 +176,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@bisj.edu.sa",
       website: "www.bisj.edu.sa",
     },
+    registrationOpenDate: "1 March 2026",
+    busService: true,
   },
   {
     id: "j4",
@@ -211,6 +219,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@jkis.edu.sa",
       website: "www.jkis.edu.sa",
     },
+    registrationOpenDate: "1 April 2026",
+    busService: true,
   },
   {
     id: "j5",
@@ -251,6 +261,8 @@ export const SCHOOLS: School[] = [
       email: "info@alwahais.edu.sa",
       website: "www.alwahais.edu.sa",
     },
+    registrationOpenDate: "1 May 2026",
+    busService: false,
   },
 
   // ── RIYADH ───────────────────────────────────────────────────────────────────
@@ -294,6 +306,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@aisr.edu.sa",
       website: "www.aisr.edu.sa",
     },
+    registrationOpenDate: "1 February 2026",
+    busService: true,
   },
   {
     id: "r2",
@@ -335,6 +349,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@bisr.edu.sa",
       website: "www.bisr.edu.sa",
     },
+    registrationOpenDate: "1 March 2026",
+    busService: true,
   },
   {
     id: "r3",
@@ -376,6 +392,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@als.edu.sa",
       website: "www.als.edu.sa",
     },
+    registrationOpenDate: "15 April 2026",
+    busService: true,
   },
   {
     id: "r4",
@@ -417,6 +435,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@sek-riyadh.edu.sa",
       website: "www.sek-riyadh.edu.sa",
     },
+    registrationOpenDate: "1 March 2026",
+    busService: true,
   },
   {
     id: "r5",
@@ -457,6 +477,8 @@ export const SCHOOLS: School[] = [
       email: "info@alfaris.edu.sa",
       website: "www.alfaris.edu.sa",
     },
+    registrationOpenDate: "1 May 2026",
+    busService: false,
   },
 
   // ── DAMMAM ───────────────────────────────────────────────────────────────────
@@ -500,6 +522,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@isgdammam.edu.sa",
       website: "www.isgdammam.edu.sa",
     },
+    registrationOpenDate: "1 March 2026",
+    busService: true,
   },
   {
     id: "d2",
@@ -541,6 +565,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@dbgs.edu.sa",
       website: "www.dbgs.edu.sa",
     },
+    registrationOpenDate: "15 March 2026",
+    busService: false,
   },
   {
     id: "d3",
@@ -582,6 +608,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@alhussan.edu.sa",
       website: "www.alhussan.edu.sa",
     },
+    registrationOpenDate: "1 April 2026",
+    busService: true,
   },
   {
     id: "d4",
@@ -622,6 +650,8 @@ export const SCHOOLS: School[] = [
       email: "info@almanahil.edu.sa",
       website: "www.almanahil.edu.sa",
     },
+    registrationOpenDate: "1 May 2026",
+    busService: false,
   },
   {
     id: "d5",
@@ -663,6 +693,8 @@ export const SCHOOLS: School[] = [
       admissionsEmail: "admissions@futureis-dammam.edu.sa",
       website: "www.futureis-dammam.edu.sa",
     },
+    registrationOpenDate: "15 April 2026",
+    busService: true,
   },
 ];
 

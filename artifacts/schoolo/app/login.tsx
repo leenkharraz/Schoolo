@@ -1,4 +1,4 @@
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
@@ -30,10 +30,6 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [mode, setMode] = useState<"login" | "signup">("login");
-
-  const [signupName, setSignupName] = useState("");
-  const [signupPhone, setSignupPhone] = useState("");
 
   const topPad = Platform.OS === "web" ? 67 : 0;
 
@@ -59,20 +55,6 @@ export default function LoginScreen() {
     }, 900);
   };
 
-  const handleSignup = () => {
-    if (!signupName.trim()) { setError("Please enter your name."); return; }
-    if (!email.trim()) { setError("Please enter your email."); return; }
-    if (!password.trim() || password.length < 6) { setError("Password must be at least 6 characters."); return; }
-    setError("");
-    setLoading(true);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setTimeout(() => {
-      updateUser({ isLoggedIn: true, email: email.trim(), name: signupName.trim(), phone: signupPhone.trim() });
-      setLoading(false);
-      router.replace("/onboarding");
-    }, 900);
-  };
-
   const handleSocialLogin = (provider: string) => {
     setLoading(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -85,6 +67,11 @@ export default function LoginScreen() {
         router.replace("/onboarding");
       }
     }, 1000);
+  };
+
+  const goToSignup = () => {
+    setError("");
+    router.push("/signup");
   };
 
   return (
@@ -101,75 +88,23 @@ export default function LoginScreen() {
           {/* Logo */}
           <View style={styles.logoBlock}>
             <Image
-              source={require("../assets/images/schoolo-logo.png")}
+              source={
+                colors.isDark
+                  ? require("../assets/images/schoolo-logo-dark.png")
+                  : require("../assets/images/schoolo-logo.png")
+              }
               style={styles.logo}
               contentFit="contain"
             />
           </View>
 
-          <Text style={[styles.headline, { color: colors.foreground }]}>
-            {mode === "login" ? "Welcome back" : "Create your account"}
-          </Text>
+          <Text style={[styles.headline, { color: colors.foreground }]}>Welcome back</Text>
           <Text style={[styles.subheadline, { color: colors.mutedForeground }]}>
-            {mode === "login"
-              ? "Sign in to find the perfect school for your child"
-              : "Join thousands of Saudi parents on Schoolo"}
+            Sign in to find the perfect school for your child
           </Text>
-
-          {/* Tab Toggle */}
-          <View style={[styles.tabRow, { backgroundColor: colors.muted, borderRadius: 12 }]}>
-            {(["login", "signup"] as const).map((t) => (
-              <TouchableOpacity
-                key={t}
-                onPress={() => { setMode(t); setError(""); }}
-                style={[
-                  styles.tab,
-                  {
-                    backgroundColor: mode === t ? colors.card : "transparent",
-                    borderRadius: 10,
-                    shadowColor: mode === t ? "#000" : "transparent",
-                    shadowOpacity: 0.06,
-                    shadowRadius: 4,
-                    elevation: mode === t ? 2 : 0,
-                  },
-                ]}
-              >
-                <Text style={[styles.tabText, { color: mode === t ? colors.primary : colors.mutedForeground, fontWeight: mode === t ? "700" : "500" }]}>
-                  {t === "login" ? "Log In" : "Sign Up"}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
 
           {/* Form */}
           <View style={styles.form}>
-            {mode === "signup" && (
-              <>
-                <View style={[styles.inputWrap, { borderColor: colors.border, backgroundColor: colors.card, borderRadius: colors.radius }]}>
-                  <Ionicons name="person-outline" size={18} color={colors.mutedForeground} />
-                  <TextInput
-                    style={[styles.input, { color: colors.foreground }]}
-                    placeholder="Full Name"
-                    placeholderTextColor={colors.mutedForeground}
-                    value={signupName}
-                    onChangeText={setSignupName}
-                    autoCapitalize="words"
-                  />
-                </View>
-                <View style={[styles.inputWrap, { borderColor: colors.border, backgroundColor: colors.card, borderRadius: colors.radius }]}>
-                  <Ionicons name="call-outline" size={18} color={colors.mutedForeground} />
-                  <TextInput
-                    style={[styles.input, { color: colors.foreground }]}
-                    placeholder="Phone (+966 5X XXX XXXX)"
-                    placeholderTextColor={colors.mutedForeground}
-                    value={signupPhone}
-                    onChangeText={setSignupPhone}
-                    keyboardType="phone-pad"
-                  />
-                </View>
-              </>
-            )}
-
             <View style={[styles.inputWrap, { borderColor: colors.border, backgroundColor: colors.card, borderRadius: colors.radius }]}>
               <Ionicons name="mail-outline" size={18} color={colors.mutedForeground} />
               <TextInput
@@ -209,21 +144,19 @@ export default function LoginScreen() {
               </View>
             ) : null}
 
-            {mode === "login" && (
-              <TouchableOpacity style={styles.forgotRow}>
-                <Text style={[styles.forgotText, { color: colors.primary }]}>Forgot Password?</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity style={styles.forgotRow}>
+              <Text style={[styles.forgotText, { color: colors.primary }]}>Forgot Password?</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={mode === "login" ? handleLogin : handleSignup}
+              onPress={handleLogin}
               disabled={loading}
               style={[styles.primaryBtn, { backgroundColor: colors.primary, borderRadius: colors.radius, opacity: loading ? 0.8 : 1 }]}
             >
               {loading ? (
                 <ActivityIndicator color="#FFF" />
               ) : (
-                <Text style={styles.primaryBtnText}>{mode === "login" ? "Log In" : "Create Account"}</Text>
+                <Text style={styles.primaryBtnText}>Log In</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -241,9 +174,11 @@ export default function LoginScreen() {
               onPress={() => handleSocialLogin("Google")}
               style={[styles.socialBtn, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}
             >
-              <View style={styles.socialIconG}>
-                <Text style={styles.socialIconText}>G</Text>
-              </View>
+              <Image
+                source={require("../assets/images/google-logo.png")}
+                style={{ width: 20, height: 20 }}
+                contentFit="contain"
+              />
               <Text style={[styles.socialBtnText, { color: colors.foreground }]}>Google</Text>
             </TouchableOpacity>
 
@@ -251,20 +186,23 @@ export default function LoginScreen() {
               onPress={() => handleSocialLogin("Apple")}
               style={[styles.socialBtn, { backgroundColor: colors.card, borderColor: colors.border, borderRadius: colors.radius }]}
             >
-              <Feather name="smartphone" size={18} color={colors.foreground} />
-              <Text style={[styles.socialBtnText, { color: colors.foreground }]}>Apple / iCloud</Text>
+              <Image
+                source={require("../assets/images/apple-logo.png")}
+                style={{ width: 20, height: 20 }}
+                contentFit="contain"
+                tintColor={colors.foreground}
+              />
+              <Text style={[styles.socialBtnText, { color: colors.foreground }]}>Apple</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Toggle mode link */}
+          {/* Sign Up link */}
           <View style={styles.switchRow}>
             <Text style={[styles.switchText, { color: colors.mutedForeground }]}>
-              {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+              Don't have an account?{" "}
             </Text>
-            <TouchableOpacity onPress={() => { setMode(mode === "login" ? "signup" : "login"); setError(""); }}>
-              <Text style={[styles.switchLink, { color: colors.primary }]}>
-                {mode === "login" ? "Sign Up" : "Log In"}
-              </Text>
+            <TouchableOpacity onPress={goToSignup}>
+              <Text style={[styles.switchLink, { color: colors.primary }]}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -277,12 +215,9 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingHorizontal: 24, gap: 0 },
   logoBlock: { alignItems: "center", marginBottom: 24 },
-  logo: { width: 260, height: 104 },
+  logo: { width: 520, height: 208 },
   headline: { fontSize: 28, fontWeight: "800", letterSpacing: -0.5, textAlign: "center" },
   subheadline: { fontSize: 14, textAlign: "center", marginTop: 6, marginBottom: 24, lineHeight: 20 },
-  tabRow: { flexDirection: "row", padding: 4, marginBottom: 24 },
-  tab: { flex: 1, paddingVertical: 10, alignItems: "center" },
-  tabText: { fontSize: 14 },
   form: { gap: 12 },
   inputWrap: {
     flexDirection: "row",
@@ -317,15 +252,6 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     borderWidth: 1,
   },
-  socialIconG: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: "#EA4335",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  socialIconText: { color: "#FFF", fontSize: 11, fontWeight: "700" },
   socialBtnText: { fontSize: 13, fontWeight: "600" },
   switchRow: { flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 },
   switchText: { fontSize: 14 },

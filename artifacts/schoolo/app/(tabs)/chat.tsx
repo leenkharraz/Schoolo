@@ -234,7 +234,7 @@ export default function ChatScreen() {
         <View style={[styles.inputBar, { backgroundColor: colors.card, borderTopColor: colors.border, paddingBottom: Math.max(insets.bottom, 12) }]}>
           <TextInput
             style={[styles.input, { backgroundColor: colors.muted, color: colors.foreground, borderRadius: 999 }]}
-            placeholder="Ask about any school…"
+            placeholder="Ask your questions…"
             placeholderTextColor={colors.mutedForeground}
             value={inputText}
             onChangeText={setInputText}

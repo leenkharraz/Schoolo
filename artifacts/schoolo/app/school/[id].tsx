@@ -67,7 +67,7 @@ function getSchoolInitials(name: string): string {
 }
 
 type PaymentMode = "annual" | "term" | "monthly";
-type ApplyStep = 1 | 2 | 3;
+type ApplyStep = 1 | 2;
 
 // ─── Small helpers ─────────────────────────────────────────────────────────────
 
@@ -140,7 +140,7 @@ export default function SchoolDetailScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { favorites, toggleFavorite, addBooking } = useApp();
+  const { favorites, toggleFavorite, addBooking, user } = useApp();
 
   const school = getSchoolById(id ?? "");
   const isFav = favorites.includes(id ?? "");
@@ -156,7 +156,7 @@ export default function SchoolDetailScreen() {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [applyStep, setApplyStep] = useState<ApplyStep>(1);
   const [applyForm, setApplyForm] = useState({
-    studentName: "", dob: "", gender: "Male", currentGrade: "", parentName: "", parentPhone: "", parentEmail: "", agreedToTnC: false,
+    selectedChildIndex: -1, studentName: "", dob: "", gender: "Male", currentGrade: "", parentName: "", parentPhone: "", parentEmail: "", agreedToTnC: false,
   });
   const [applySlot, setApplySlot] = useState<AppointmentSlot | null>(null);
   const [applyDone, setApplyDone] = useState(false);
@@ -276,6 +276,20 @@ export default function SchoolDetailScreen() {
               <Ionicons name="people-outline" size={14} color={colors.primary} />
               <Text style={[styles.metaText, { color: colors.mutedForeground }]}>
                 {school.studentCount.toLocaleString()} students · Est. {school.established}
+              </Text>
+            </View>
+            {school.registrationOpenDate ? (
+              <View style={styles.metaItem}>
+                <Ionicons name="calendar-outline" size={14} color={colors.primary} />
+                <Text style={[styles.metaText, { color: colors.mutedForeground }]}>
+                  Registration opens: <Text style={{ fontWeight: "700", color: colors.primary }}>{school.registrationOpenDate}</Text>
+                </Text>
+              </View>
+            ) : null}
+            <View style={styles.metaItem}>
+              <Ionicons name={school.busService ? "bus-outline" : "close-circle-outline"} size={14} color={school.busService ? colors.primary : colors.mutedForeground} />
+              <Text style={[styles.metaText, { color: colors.mutedForeground }]}>
+                {school.busService ? "Bus service available" : "No bus service"}
               </Text>
             </View>
             <Text style={[styles.description, { color: colors.foreground }]}>{school.description}</Text>
@@ -739,7 +753,7 @@ export default function SchoolDetailScreen() {
             <View style={[styles.sheetHandle, { backgroundColor: colors.border }]} />
             <View style={styles.sheetHeader}>
               <Text style={[styles.sheetTitle, { color: colors.foreground }]}>
-                {applyDone ? "Application Submitted" : `Apply — Step ${applyStep} of 3`}
+                {applyDone ? "Application Submitted" : `Apply — Step ${applyStep} of 2`}
               </Text>
               <TouchableOpacity onPress={() => setShowApplyModal(false)}>
                 <Ionicons name="close" size={22} color={colors.mutedForeground} />
@@ -749,7 +763,7 @@ export default function SchoolDetailScreen() {
             {/* Progress */}
             {!applyDone && (
               <View style={[styles.applyProgress, { backgroundColor: colors.muted }]}>
-                {[1, 2, 3].map((s) => (
+                {[1, 2].map((s) => (
                   <View key={s} style={[styles.applyProgressStep, { backgroundColor: s <= applyStep ? colors.primary : colors.border, flex: 1 }]} />
                 ))}
               </View>
@@ -774,66 +788,9 @@ export default function SchoolDetailScreen() {
               <ScrollView contentContainerStyle={{ padding: 20, gap: 14 }} keyboardShouldPersistTaps="handled">
                 {applyStep === 1 && (
                   <>
-                    <Text style={[styles.applyStepTitle, { color: colors.foreground }]}>Student Details</Text>
-                    {[
-                      { label: "Student Full Name", key: "studentName", placeholder: "As in passport" },
-                      { label: "Date of Birth", key: "dob", placeholder: "DD/MM/YYYY" },
-                    ].map(({ label, key, placeholder }) => (
-                      <View key={key}>
-                        <Text style={[styles.applyLabel, { color: colors.mutedForeground }]}>{label}</Text>
-                        <TextInput
-                          style={[styles.applyInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.card, borderRadius: 10 }]}
-                          placeholder={placeholder}
-                          placeholderTextColor={colors.mutedForeground}
-                          value={(applyForm as any)[key]}
-                          onChangeText={(v) => setApplyForm((p) => ({ ...p, [key]: v }))}
-                        />
-                      </View>
-                    ))}
-                    <View>
-                      <Text style={[styles.applyLabel, { color: colors.mutedForeground }]}>Gender</Text>
-                      <View style={styles.genderRow}>
-                        {["Male", "Female"].map((g) => (
-                          <TouchableOpacity key={g} onPress={() => setApplyForm((p) => ({ ...p, gender: g }))}
-                            style={[styles.genderChip, { backgroundColor: applyForm.gender === g ? colors.primary : colors.muted, borderRadius: 10 }]}
-                          >
-                            <Text style={[styles.genderChipText, { color: applyForm.gender === g ? "#FFF" : colors.foreground }]}>{g}</Text>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
-                    </View>
-                    <View>
-                      <Text style={[styles.applyLabel, { color: colors.mutedForeground }]}>Current Grade</Text>
-                      <TextInput
-                        style={[styles.applyInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.card, borderRadius: 10 }]}
-                        placeholder="e.g. Grade 4 / Year 5"
-                        placeholderTextColor={colors.mutedForeground}
-                        value={applyForm.currentGrade}
-                        onChangeText={(v) => setApplyForm((p) => ({ ...p, currentGrade: v }))}
-                      />
-                    </View>
-
-                    {/* Test criteria */}
-                    <View style={[styles.criteriaCard, { backgroundColor: "#FEF0E0", borderColor: "#F5D6B0", borderRadius: 12 }]}>
-                      <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                        <Ionicons name="ribbon-outline" size={16} color={colors.primary} />
-                        <Text style={[styles.criteriaTitle, { color: colors.primary }]}>Placement Test Criteria</Text>
-                      </View>
-                      {["English proficiency assessment (60% pass mark)", "Mathematics assessment (55% pass mark)", "Interview with a school counsellor", "Previous school reports required"].map((c) => (
-                        <View key={c} style={styles.criteriaRow}>
-                          <Ionicons name="checkmark-outline" size={13} color={colors.primary} />
-                          <Text style={[styles.criteriaText, { color: colors.navy }]}>{c}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  </>
-                )}
-
-                {applyStep === 2 && (
-                  <>
-                    <Text style={[styles.applyStepTitle, { color: colors.foreground }]}>Book Placement Test</Text>
+                    <Text style={[styles.applyStepTitle, { color: colors.foreground }]}>Select Placement Test Date</Text>
                     <Text style={[styles.scheduleInfo, { color: colors.mutedForeground }]}>
-                      Select a date for your child's placement test. Tests are held Sunday–Thursday.
+                      Choose a date for your child's placement test. Tests are held Sunday–Thursday.
                     </Text>
                     {scheduleSlots.map((slot, i) => (
                       <TouchableOpacity
@@ -872,9 +829,72 @@ export default function SchoolDetailScreen() {
                   </>
                 )}
 
-                {applyStep === 3 && (
+                {applyStep === 2 && (
                   <>
-                    <Text style={[styles.applyStepTitle, { color: colors.foreground }]}>Parent / Guardian Details</Text>
+                    <Text style={[styles.applyStepTitle, { color: colors.foreground }]}>Student & Parent Details</Text>
+
+                    {/* Child selector */}
+                    {user.children && user.children.length > 0 && (
+                      <View>
+                        <Text style={[styles.applyLabel, { color: colors.mutedForeground }]}>Select Child</Text>
+                        <View style={styles.genderRow}>
+                          {user.children.map((child, idx) => (
+                            <TouchableOpacity
+                              key={idx}
+                              onPress={() => setApplyForm((p) => ({
+                                ...p,
+                                selectedChildIndex: idx,
+                                studentName: child.name,
+                                dob: child.birthdate,
+                                gender: child.gender || "Male",
+                                currentGrade: child.grade,
+                              }))}
+                              style={[styles.genderChip, {
+                                backgroundColor: applyForm.selectedChildIndex === idx ? colors.primary : colors.muted,
+                                borderRadius: 10,
+                              }]}
+                            >
+                              <Text style={[styles.genderChipText, { color: applyForm.selectedChildIndex === idx ? "#FFF" : colors.foreground }]}>
+                                {child.name || `Child ${idx + 1}`}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      </View>
+                    )}
+
+                    {/* Student fields */}
+                    {[
+                      { label: "Student Full Name", key: "studentName", placeholder: "As in passport" },
+                      { label: "Date of Birth", key: "dob", placeholder: "DD/MM/YYYY" },
+                    ].map(({ label, key, placeholder }) => (
+                      <View key={key}>
+                        <Text style={[styles.applyLabel, { color: colors.mutedForeground }]}>{label}</Text>
+                        <TextInput
+                          style={[styles.applyInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.card, borderRadius: 10 }]}
+                          placeholder={placeholder}
+                          placeholderTextColor={colors.mutedForeground}
+                          value={(applyForm as any)[key]}
+                          onChangeText={(v) => setApplyForm((p) => ({ ...p, [key]: v }))}
+                        />
+                      </View>
+                    ))}
+
+                    {/* Gender */}
+                    <View>
+                      <Text style={[styles.applyLabel, { color: colors.mutedForeground }]}>Gender</Text>
+                      <View style={styles.genderRow}>
+                        {["Male", "Female"].map((g) => (
+                          <TouchableOpacity key={g} onPress={() => setApplyForm((p) => ({ ...p, gender: g }))}
+                            style={[styles.genderChip, { backgroundColor: applyForm.gender === g ? colors.primary : colors.muted, borderRadius: 10 }]}
+                          >
+                            <Text style={[styles.genderChipText, { color: applyForm.gender === g ? "#FFF" : colors.foreground }]}>{g}</Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    </View>
+
+                    {/* Parent fields */}
                     {[
                       { label: "Parent / Guardian Name", key: "parentName", placeholder: "Full name", keyboard: "default" },
                       { label: "Phone Number", key: "parentPhone", placeholder: "+966 5X XXX XXXX", keyboard: "phone-pad" },
@@ -898,7 +918,7 @@ export default function SchoolDetailScreen() {
                     <View style={[styles.tncCard, { backgroundColor: colors.muted, borderRadius: 12 }]}>
                       <Text style={[styles.tncTitle, { color: colors.foreground }]}>Terms & Conditions</Text>
                       <Text style={[styles.tncBody, { color: colors.mutedForeground }]}>
-                        By submitting this application, you confirm that all provided information is accurate. The school reserves the right to request additional documentation. Application fees are non-refundable. Admission is subject to availability and placement test results. The school is committed to providing equal opportunities to all applicants.
+                        By submitting this application, you confirm that all provided information is accurate. The school reserves the right to request additional documentation. Application fees are non-refundable. Admission is subject to availability and placement test results.
                       </Text>
                       <TouchableOpacity
                         onPress={() => setApplyForm((p) => ({ ...p, agreedToTnC: !p.agreedToTnC }))}
@@ -927,7 +947,7 @@ export default function SchoolDetailScreen() {
                   )}
                   <TouchableOpacity
                     onPress={() => {
-                      if (applyStep < 3) {
+                      if (applyStep < 2) {
                         setApplyStep((s) => (s + 1) as ApplyStep);
                         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                       } else {
@@ -937,15 +957,15 @@ export default function SchoolDetailScreen() {
                         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
                       }
                     }}
-                    disabled={applyStep === 3 && !applyForm.agreedToTnC}
+                    disabled={applyStep === 2 && !applyForm.agreedToTnC}
                     style={[styles.ctaPrimary, {
                       flex: 1,
-                      backgroundColor: applyStep === 3 && !applyForm.agreedToTnC ? colors.border : colors.primary,
+                      backgroundColor: applyStep === 2 && !applyForm.agreedToTnC ? colors.border : colors.primary,
                       borderRadius: colors.radius,
                     }]}
                   >
                     <Text style={styles.ctaPrimaryText}>
-                      {applyStep === 3 ? "Submit Application" : "Continue"}
+                      {applyStep === 2 ? "Submit Application" : "Continue"}
                     </Text>
                   </TouchableOpacity>
                 </View>

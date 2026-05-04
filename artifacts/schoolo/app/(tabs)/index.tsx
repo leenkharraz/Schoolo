@@ -3,7 +3,7 @@ import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -170,14 +170,22 @@ export default function HomeScreen() {
   const router = useRouter();
   const {
     favorites, lastSeen, toggleFavorite, addToLastSeen,
-    activeFilter, setActiveFilter, user,
+    activeFilter, setActiveFilter, user, updateUser,
     sortOrder, setSortOrder, selectedCity, setSelectedCity,
     unreadAlertCount,
   } = useApp();
   const [searchQuery, setSearchQuery] = useState("");
   const [showCityModal, setShowCityModal] = useState(false);
   const [showSortModal, setShowSortModal] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
   const topPaddingWeb = Platform.OS === "web" ? 67 : 0;
+
+  useEffect(() => {
+    if (user.isLoggedIn && !user.locationPermissionAsked) {
+      const timer = setTimeout(() => setShowLocationModal(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [user.isLoggedIn, user.locationPermissionAsked]);
 
   const filteredSchools = useMemo(() => {
     let result = [...SCHOOLS];
@@ -265,7 +273,15 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Image source={require("../../assets/images/schoolo-logo.png")} style={styles.logo} contentFit="contain" />
+          <Image
+            source={
+              colors.isDark
+                ? require("../../assets/images/schoolo-logo-dark.png")
+                : require("../../assets/images/schoolo-logo.png")
+            }
+            style={styles.logo}
+            contentFit="contain"
+          />
           <View style={styles.headerRight}>
             {/* City Dropdown */}
             <TouchableOpacity
@@ -508,6 +524,40 @@ export default function HomeScreen() {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      {/* Location Permission Modal */}
+      <Modal visible={showLocationModal} transparent animationType="fade">
+        <View style={styles.locationOverlay}>
+          <View style={[styles.locationSheet, { backgroundColor: colors.background, borderRadius: colors.radius }]}>
+            <View style={[styles.locationIconWrap, { backgroundColor: "#FEF0E0" }]}>
+              <Ionicons name="location-sharp" size={32} color={colors.primary} />
+            </View>
+            <Text style={[styles.locationTitle, { color: colors.foreground }]}>Enable Location</Text>
+            <Text style={[styles.locationBody, { color: colors.mutedForeground }]}>
+              Allow Schoolo to use your location to show schools near you and sort by distance.
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                updateUser({ locationPermissionAsked: true });
+                setShowLocationModal(false);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }}
+              style={[styles.locationPrimary, { backgroundColor: colors.primary, borderRadius: colors.radius }]}
+            >
+              <Text style={styles.locationPrimaryText}>Allow Location Access</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                updateUser({ locationPermissionAsked: true });
+                setShowLocationModal(false);
+              }}
+              style={styles.locationSkip}
+            >
+              <Text style={[styles.locationSkipText, { color: colors.mutedForeground }]}>Not Now</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -516,7 +566,7 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   scrollContent: { paddingHorizontal: 20 },
   header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 14 },
-  logo: { width: 160, height: 58 },
+  logo: { width: 190, height: 68 },
   headerRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   locationChip: { flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, borderWidth: 1 },
   locationText: { fontSize: 12, fontWeight: "500" },
@@ -533,6 +583,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   notifBadgeText: { color: "#FFF", fontSize: 9, fontWeight: "700" },
+  locationOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", alignItems: "center", padding: 24 },
+  locationSheet: { width: "100%", padding: 28, alignItems: "center", gap: 8 },
+  locationIconWrap: { width: 64, height: 64, borderRadius: 32, alignItems: "center", justifyContent: "center", marginBottom: 4 },
+  locationTitle: { fontSize: 20, fontWeight: "800", textAlign: "center" },
+  locationBody: { fontSize: 14, textAlign: "center", lineHeight: 20, marginBottom: 8 },
+  locationPrimary: { width: "100%", paddingVertical: 15, alignItems: "center", justifyContent: "center" },
+  locationPrimaryText: { color: "#FFF", fontSize: 15, fontWeight: "700" },
+  locationSkip: { paddingVertical: 12, width: "100%", alignItems: "center" },
+  locationSkipText: { fontSize: 14, fontWeight: "500" },
   greeting: { fontSize: 26, fontWeight: "700", letterSpacing: -0.5 },
   subGreeting: { fontSize: 14, marginTop: 3, marginBottom: 16 },
   searchBar: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 14, paddingVertical: 12, borderWidth: 1, marginBottom: 14 },

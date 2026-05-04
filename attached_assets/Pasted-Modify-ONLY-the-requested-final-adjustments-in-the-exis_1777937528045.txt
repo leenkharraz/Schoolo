@@ -1,0 +1,111 @@
+Modify ONLY the requested final adjustments in the existing Schoolo app.
+
+Do NOT change:
+- Overall UI design
+- Layout structure unless required below
+- Colors except the dark mode fixes mentioned below
+- Navigation
+- Existing pages
+- Existing components
+- Existing school images above the school name
+- Existing app logic unless required below
+
+Use the current project structure and edit only the necessary files.
+
+FINAL REQUIRED EDITS:
+
+1. Login Page Edits
+
+- Make the logo on the login page double its current size.
+- Make the logo on the Home page slightly bigger than its current size.
+- Replace the Google and Apple login icons with the inserted/provided images.
+- In dark mode, the app logo in both the login page and the Home page must change to the inserted/provided dark mode logo image.
+- Keep the same logo sizes after replacing the images.
+
+2. Sign Up Page
+
+When the user clicks:
+“You don’t have an account? Sign up”
+or any similar sign-up text/button, it must navigate to a separate Sign Up page.
+
+The Sign Up page must ask for the following mandatory fields:
+
+Parent/User Information:
+- Full name
+- Phone number
+- Email
+- Which city are you in?
+- How many children are you signing up?
+
+Children Information:
+Based on the number of children entered, dynamically create new input sections for each child.
+
+Each child section must ask for:
+- Child name
+- Birthdate
+- Gender
+- Grade
+
+School Preferences:
+- Annual school budget
+- Preferred curriculum
+- Preferred third language
+- Preferred activities
+- Special needs support
+- Maximum distance from home
+- School type preference
+
+All fields must be required before the user can complete sign up.
+
+3. Home Page After Login / Sign Up
+
+- Show a message or pop-up asking the user to allow location access.
+
+4. School Page
+
+Add the following information to each school details page:
+- Registration opening date
+- Whether the school provides bus service / school buses
+
+Update the Apply Now button flow.
+
+The Apply Now flow must only have 2 steps:
+
+Step 1:
+- Parent selects the preferred placement test date.
+
+Step 2:
+- Parent and student details.
+
+In Step 2:
+- Add a dropdown menu for selecting the child name.
+- The dropdown options must come from the children entered during sign up.
+- After selecting the child, automatically display the required child information based on the saved sign-up data.
+- Keep the agreement to terms and conditions underneath the displayed information.
+- Keep the Submit Application button under the terms and conditions agreement.
+
+Do not add extra steps.
+
+5. AI Chat Page
+
+- Add a text input bar above the existing bottom navigation bar.
+- The bar is only visual for now and does not need to function.
+- Placeholder text must be:
+“Ask your questions…”
+- Do not remove the existing common questions or chatbot content.
+
+6. Dark Mode Fixes
+
+In the school page dark mode:
+- Change the text color inside the siblings discount box to a darker readable color.
+- Change the text color inside the special needs box to a darker readable color.
+- The text must be clearly visible.
+- Do not change the box shapes or layout.
+
+Important:
+Only apply these exact edits.
+Do not redesign the app.
+Do not change unrelated sections.
+Do not remove existing features.
+Do not change the school pictures above the school name.
+Do not break the existing light mode or dark mode toggle.

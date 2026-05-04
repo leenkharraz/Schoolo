@@ -9,6 +9,13 @@ import React, {
 
 import { loadAppearanceMode } from "@/store/theme";
 
+export interface ChildProfile {
+  name: string;
+  birthdate: string;
+  gender: string;
+  grade: string;
+}
+
 export interface UserProfile {
   name: string;
   phone: string;
@@ -27,6 +34,8 @@ export interface UserProfile {
   preferredSchoolType: string;
   isLoggedIn: boolean;
   hasCompletedOnboarding: boolean;
+  children: ChildProfile[];
+  locationPermissionAsked: boolean;
 }
 
 export interface Booking {
@@ -107,6 +116,8 @@ const DEFAULT_USER: UserProfile = {
   preferredSchoolType: "any",
   isLoggedIn: false,
   hasCompletedOnboarding: false,
+  children: [],
+  locationPermissionAsked: false,
 };
 
 const DEFAULT_ALERTS: Alert[] = [
