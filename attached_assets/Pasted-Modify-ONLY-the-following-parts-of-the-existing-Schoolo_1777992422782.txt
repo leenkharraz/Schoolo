@@ -1,0 +1,60 @@
+Modify ONLY the following parts of the existing Schoolo app. Do NOT redesign the app. Do NOT change colors layout navigation or unrelated components.
+
+Login page edits:
+1. Make the Apple logo the same size as the Google logo.
+2. Under “Don’t have an account? Sign up” add a new option:
+   “Continue as a guest”
+3. When the user presses “Continue as a guest” they should be taken directly to the home page without logging in or being asked for their location.
+4. Fix the “Sign up” button because it currently does not work.
+
+Sign up page:
+When the user presses “Sign up” from the login page it must open a new sign up page.
+
+The sign up page must ask for:
+- Full name
+- Phone number
+- Email
+- Which city are you in?
+- How many children are you signing up?
+- Annual school budget
+- Preferred curriculum
+- Preferred third language
+- Preferred activities
+- Special needs support
+- Maximum distance from home
+- School type preference
+
+Based on the number of children selected new fields must appear automatically for each child.
+
+For each child ask:
+- Child’s name
+- birthdate
+- Gender
+- Grade
+
+All sign up fields must be mandatory. The user should not be able to complete sign up unless all required fields are filled.
+
+Remove old questions after login:
+Delete the 9 questions pages that currently appear after logging in.
+The parent questions must only appear during the sign up phase.
+After login or sign up the user should go directly to the home page.
+
+Home page edits:
+After logging in signing up or continuing as guest:
+- Delete the second filter called “Any Student Type”
+- Delete its icon too
+- Do not leave empty space where it was
+
+Dark mode edits:
+In the school details page:
+- In dark mode only change the text color inside the siblings discount box to a darker readable color.
+- In dark mode only change the text color inside the special needs box to a darker readable color.
+- Do not change the shape background border or layout of these boxes.
+
+Important:
+- Keep the existing UI style.
+- Do not change unrelated pages.
+- Do not remove any school data.
+- Do not change the navigation bar.
+- Do not change the homepage design except deleting “Any Student Type”.
+- Make sure the app still works in both light mode and dark mode. ‎<This message was edited>

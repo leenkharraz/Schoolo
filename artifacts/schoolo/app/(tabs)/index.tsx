@@ -178,7 +178,6 @@ export default function HomeScreen() {
   const [showCityModal, setShowCityModal] = useState(false);
   const [showSortModal, setShowSortModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
-  const [studentTypeFilter, setStudentTypeFilter] = useState("All");
   const topPaddingWeb = Platform.OS === "web" ? 67 : 0;
 
   useEffect(() => {
@@ -247,13 +246,8 @@ export default function HomeScreen() {
       }
     }
 
-    // Student type filter
-    if (studentTypeFilter !== "All") {
-      result = result.filter((s) => s.studentType === studentTypeFilter);
-    }
-
     return result;
-  }, [activeFilter, searchQuery, user.budgetMax, selectedCity, sortOrder, studentTypeFilter]);
+  }, [activeFilter, searchQuery, user.budgetMax, selectedCity, sortOrder]);
 
   const topPickSchools = filteredSchools.slice(0, 8);
 
@@ -385,31 +379,6 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {/* Student Type Filter */}
-        <View style={styles.studentTypeRow}>
-          <Ionicons name="people-outline" size={14} color={colors.mutedForeground} style={{ marginTop: 2 }} />
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.studentTypeList}>
-            {["All", "Mixed", "Separate Boys and Girls Campuses", "Boys Only", "Girls Only"].map((opt) => {
-              const active = studentTypeFilter === opt;
-              return (
-                <TouchableOpacity
-                  key={opt}
-                  onPress={() => { setStudentTypeFilter(opt); Haptics.selectionAsync(); }}
-                  style={[styles.studentTypeChip, {
-                    backgroundColor: active ? colors.secondary : colors.card,
-                    borderColor: active ? colors.secondary : colors.border,
-                    borderRadius: 999,
-                  }]}
-                >
-                  <Text style={[styles.studentTypeChipText, { color: active ? "#FFF" : colors.foreground }]}>
-                    {opt === "All" ? "Any Student Type" : opt}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
-
         {/* Suggested Schools */}
         <View style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Suggested for You</Text>
@@ -444,7 +413,7 @@ export default function HomeScreen() {
           <View style={[styles.emptyState, { backgroundColor: colors.muted, borderRadius: colors.radius }]}>
             <Ionicons name="school-outline" size={32} color={colors.mutedForeground} />
             <Text style={[styles.emptyText, { color: colors.mutedForeground }]}>No schools match your current filters</Text>
-            <TouchableOpacity onPress={() => { setActiveFilter("all"); setSortOrder("featured"); setStudentTypeFilter("All"); }}>
+            <TouchableOpacity onPress={() => { setActiveFilter("all"); setSortOrder("featured"); }}>
               <Text style={[styles.emptyLink, { color: colors.primary }]}>Clear filters</Text>
             </TouchableOpacity>
           </View>
@@ -623,10 +592,6 @@ const styles = StyleSheet.create({
   locationPrimaryText: { color: "#FFF", fontSize: 15, fontWeight: "700" },
   locationSkip: { paddingVertical: 12, width: "100%", alignItems: "center" },
   locationSkipText: { fontSize: 14, fontWeight: "500" },
-  studentTypeRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 10, marginTop: 4 },
-  studentTypeList: { gap: 8, flexDirection: "row", alignItems: "center" },
-  studentTypeChip: { paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1 },
-  studentTypeChipText: { fontSize: 12, fontWeight: "500" },
   greeting: { fontSize: 26, fontWeight: "700", letterSpacing: -0.5 },
   subGreeting: { fontSize: 14, marginTop: 3, marginBottom: 16 },
   searchBar: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 14, paddingVertical: 12, borderWidth: 1, marginBottom: 14 },

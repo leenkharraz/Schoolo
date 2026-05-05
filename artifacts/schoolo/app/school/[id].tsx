@@ -542,9 +542,9 @@ export default function SchoolDetailScreen() {
             <View style={[styles.infoCard, { backgroundColor: "#EDFBF3", borderColor: "#B8EDD4", borderRadius: colors.radius }]}>
               <View style={styles.infoCardHeader}>
                 <Ionicons name="people" size={18} color="#16a34a" />
-                <Text style={[styles.infoCardTitle, { color: colors.foreground }]}>Siblings Discount Available</Text>
+                <Text style={[styles.infoCardTitle, { color: colors.isDark ? "#132F45" : colors.foreground }]}>Siblings Discount Available</Text>
               </View>
-              <Text style={[styles.infoCardBody, { color: colors.foreground }]}>
+              <Text style={[styles.infoCardBody, { color: colors.isDark ? "#132F45" : colors.foreground }]}>
                 Enrol two or more children and receive a {school.siblingsDiscountPercent}% discount on the second child's fees — saving up to SAR {Math.round(school.fees.totalEstimate * school.siblingsDiscountPercent / 100).toLocaleString()} per year.
               </Text>
             </View>
@@ -555,9 +555,9 @@ export default function SchoolDetailScreen() {
             <View style={[styles.infoCard, { backgroundColor: "#EEF5FA", borderColor: "#B8D4E8", borderRadius: colors.radius }]}>
               <View style={styles.infoCardHeader}>
                 <Ionicons name="heart-circle-outline" size={18} color="#1d4ed8" />
-                <Text style={[styles.infoCardTitle, { color: colors.foreground }]}>Special Needs Support</Text>
+                <Text style={[styles.infoCardTitle, { color: colors.isDark ? "#132F45" : colors.foreground }]}>Special Needs Support</Text>
               </View>
-              <Text style={[styles.infoCardBody, { color: colors.foreground }]}>
+              <Text style={[styles.infoCardBody, { color: colors.isDark ? "#132F45" : colors.foreground }]}>
                 This school has a dedicated learning support department with trained specialists. Contact the admissions team to discuss your child's specific requirements before applying.
               </Text>
             </View>

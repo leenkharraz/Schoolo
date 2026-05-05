@@ -34,7 +34,7 @@ export default function LoginScreen() {
   const topPad = Platform.OS === "web" ? 67 : 0;
 
   if (user.isLoggedIn) {
-    router.replace(user.hasCompletedOnboarding ? "/" : "/onboarding");
+    router.replace("/");
     return null;
   }
 
@@ -45,13 +45,9 @@ export default function LoginScreen() {
     setLoading(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
-      updateUser({ isLoggedIn: true, email: email.trim(), name: user.name || email.split("@")[0] });
+      updateUser({ isLoggedIn: true, hasCompletedOnboarding: true, email: email.trim(), name: user.name || email.split("@")[0] });
       setLoading(false);
-      if (user.hasCompletedOnboarding) {
-        router.replace("/");
-      } else {
-        router.replace("/onboarding");
-      }
+      router.replace("/");
     }, 900);
   };
 
@@ -59,19 +55,21 @@ export default function LoginScreen() {
     setLoading(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
-      updateUser({ isLoggedIn: true, name: `${provider} User`, email: `user@${provider.toLowerCase()}.com` });
+      updateUser({ isLoggedIn: true, hasCompletedOnboarding: true, name: `${provider} User`, email: `user@${provider.toLowerCase()}.com` });
       setLoading(false);
-      if (user.hasCompletedOnboarding) {
-        router.replace("/");
-      } else {
-        router.replace("/onboarding");
-      }
+      router.replace("/");
     }, 1000);
   };
 
   const goToSignup = () => {
     setError("");
     router.push("/signup");
+  };
+
+  const handleGuestLogin = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    updateUser({ isLoggedIn: true, hasCompletedOnboarding: true, locationPermissionAsked: true, name: "Guest" });
+    router.replace("/");
   };
 
   return (
@@ -205,6 +203,11 @@ export default function LoginScreen() {
               <Text style={[styles.switchLink, { color: colors.primary }]}>Sign Up</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Guest option */}
+          <TouchableOpacity onPress={handleGuestLogin} style={styles.guestBtn}>
+            <Text style={[styles.guestText, { color: colors.mutedForeground }]}>Continue as a guest</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </KeyboardAvoidingView>
@@ -256,4 +259,6 @@ const styles = StyleSheet.create({
   switchRow: { flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 20 },
   switchText: { fontSize: 14 },
   switchLink: { fontSize: 14, fontWeight: "700" },
+  guestBtn: { alignItems: "center", marginTop: 14, paddingVertical: 8 },
+  guestText: { fontSize: 14, textDecorationLine: "underline" },
 });
