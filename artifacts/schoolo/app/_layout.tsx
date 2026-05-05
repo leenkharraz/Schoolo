@@ -26,7 +26,7 @@ function AuthGate() {
   const segments = useSegments();
 
   useEffect(() => {
-    const inAuthScreen = segments[0] === "login" || segments[0] === "onboarding";
+    const inAuthScreen = segments[0] === "login" || segments[0] === "onboarding" || segments[0] === "signup";
 
     if (!user.isLoggedIn && !inAuthScreen) {
       router.replace("/login");
@@ -48,6 +48,7 @@ function RootLayoutNav() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="school" options={{ headerShown: false, animation: "slide_from_right" }} />
         <Stack.Screen name="login" options={{ headerShown: false, animation: "none" }} />
+        <Stack.Screen name="signup" options={{ headerShown: false, animation: "slide_from_right" }} />
         <Stack.Screen name="onboarding" options={{ headerShown: false, animation: "slide_from_bottom" }} />
       </Stack>
     </>
