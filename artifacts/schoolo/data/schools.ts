@@ -46,6 +46,7 @@ export interface School {
   };
   registrationOpenDate: string;
   busService: boolean;
+  studentType: "Boys Only" | "Girls Only" | "Mixed" | "Separate Boys and Girls Campuses";
 }
 
 export const SCHOOLS: School[] = [
@@ -92,6 +93,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 April 2026",
     busService: true,
+    studentType: "Separate Boys and Girls Campuses",
   },
   {
     id: "j2",
@@ -135,6 +137,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "15 March 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "j3",
@@ -178,6 +181,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 March 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "j4",
@@ -221,6 +225,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 April 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "j5",
@@ -263,6 +268,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 May 2026",
     busService: false,
+    studentType: "Separate Boys and Girls Campuses",
   },
 
   // ── RIYADH ───────────────────────────────────────────────────────────────────
@@ -308,6 +314,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 February 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "r2",
@@ -351,6 +358,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 March 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "r3",
@@ -394,6 +402,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "15 April 2026",
     busService: true,
+    studentType: "Separate Boys and Girls Campuses",
   },
   {
     id: "r4",
@@ -437,6 +446,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 March 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "r5",
@@ -479,6 +489,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 May 2026",
     busService: false,
+    studentType: "Separate Boys and Girls Campuses",
   },
 
   // ── DAMMAM ───────────────────────────────────────────────────────────────────
@@ -524,6 +535,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 March 2026",
     busService: true,
+    studentType: "Mixed",
   },
   {
     id: "d2",
@@ -567,6 +579,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "15 March 2026",
     busService: false,
+    studentType: "Mixed",
   },
   {
     id: "d3",
@@ -610,6 +623,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 April 2026",
     busService: true,
+    studentType: "Separate Boys and Girls Campuses",
   },
   {
     id: "d4",
@@ -652,6 +666,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "1 May 2026",
     busService: false,
+    studentType: "Separate Boys and Girls Campuses",
   },
   {
     id: "d5",
@@ -695,6 +710,7 @@ export const SCHOOLS: School[] = [
     },
     registrationOpenDate: "15 April 2026",
     busService: true,
+    studentType: "Separate Boys and Girls Campuses",
   },
 ];
 
