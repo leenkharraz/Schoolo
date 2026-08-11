@@ -1,0 +1,95 @@
+Fix and configure the Vercel deployment for the Schoolo web application.
+
+GitHub repository:
+https://github.com/leenkharraz/Schoolo.git
+
+IMPORTANT:
+The website I want to deploy is ONLY the React/Vite frontend located in:
+
+schoolo-web/
+
+Do NOT deploy the repository root.
+Do NOT deploy the Express/API server.
+Do NOT build src/app.ts from the backend.
+Do NOT use or modify the old schoolo-api-server Vercel project.
+
+The correct Vercel configuration must be:
+
+Project Name: schoolo-web
+Root Directory: schoolo-web
+Framework / Application Preset: Vite
+Build Command: pnpm build
+Output Directory: dist
+
+First inspect the current Schoolo repository and the schoolo-web folder.
+
+Then:
+
+1. Verify schoolo-web is a standalone React + TypeScript + Vite project.
+2. Verify its package.json contains the correct build scripts.
+3. Verify Vite builds from inside schoolo-web.
+4. Verify TypeScript passes.
+5. Verify ESLint passes.
+6. Verify the production build outputs to dist.
+7. Verify vercel.json is correct for a Vite SPA.
+8. Configure SPA routing so refreshing routes like:
+   /profile
+   /favorites
+   /schools/...
+   does not produce a 404.
+9. Make sure Vercel will never try to compile the backend Express src/app.ts when deploying Schoolo Web.
+10. Keep the original Schoolo application and backend untouched.
+
+If the Vercel CLI is available and my Vercel account is authenticated:
+
+- create or link the correct Vercel project named schoolo-web
+- make sure the deployed project uses schoolo-web as its root
+- deploy the Schoolo web application to production
+
+If you cannot modify Vercel account/dashboard configuration because authentication or permissions are missing:
+
+DO NOT guess.
+DO NOT deploy the wrong project.
+
+Instead tell me exactly what I need to select manually in Vercel.
+
+Before any production deployment run:
+
+- TypeScript
+- ESLint
+- pnpm build
+
+All must pass.
+
+If code or configuration changes are required:
+
+- make only changes related to Schoolo Web deployment
+- commit them
+- push them normally to main
+- do not force push
+
+At the end give me:
+
+Schoolo Vercel Deployment
+
+Correct project: PASS / FAIL
+Root Directory = schoolo-web: PASS / FAIL
+Vite preset: PASS / FAIL
+Build command: PASS / FAIL
+Output directory = dist: PASS / FAIL
+TypeScript: PASS / FAIL
+ESLint: PASS / FAIL
+Production build: PASS / FAIL
+SPA routing: PASS / FAIL
+Backend excluded: PASS / FAIL
+GitHub push: PASS / FAIL
+Vercel deployment: PASS / FAIL
+
+Then tell me:
+
+- whether you were able to configure Vercel automatically
+- whether I need to change anything manually
+- exact manual steps if needed
+- production URL if deployment succeeds
+
+Do not change unrelated Schoolo functionality.
