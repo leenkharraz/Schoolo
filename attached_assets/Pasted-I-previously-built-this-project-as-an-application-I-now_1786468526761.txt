@@ -1,0 +1,161 @@
+I previously built this project as an application. I now want you to convert the existing project into a responsive web application while preserving the same interface design identity features user flow and overall experience.
+
+The project is called Skoolu. It is a school discovery and comparison platform that helps parents find suitable schools.
+
+Before making changes:
+
+1. Inspect the entire existing project structure and identify the current framework libraries components routes assets database connections and backend services.
+2. Do not delete or overwrite working features.
+3. Do not redesign the project from scratch.
+4. Preserve the existing branding colors typography cards icons navigation content and user experience.
+5. Create a backup or clearly document major structural changes.
+6. Check whether the existing project is already configured with Git.
+
+Main objective:
+
+Convert the current application into a production-ready web-based application that can be opened through a normal browser and deployed online.
+
+The website must still feel like an application rather than a traditional informational website. It should have an app-style interface with structured screens cards navigation panels filters interactive controls modals and smooth page transitions.
+
+Conversion requirements:
+
+* Reuse the existing interface and components wherever possible.
+* Convert any mobile-only or native application code into web-compatible components.
+* Remove dependencies that only work in native mobile environments.
+* Replace native navigation with web routing.
+* Replace native storage or device APIs with secure browser-compatible alternatives.
+* Keep all current features working.
+* Keep the same screens and user journeys.
+* Ensure buttons forms filters search comparison and navigation are functional.
+* Do not create fake buttons or placeholder functionality unless the original feature is incomplete.
+* Preserve Arabic and English support if it already exists.
+* Support both RTL and LTR layouts correctly.
+* Add accessible labels keyboard navigation focus states and readable contrast.
+* Add proper loading empty error unauthorized and offline states.
+
+Responsive design:
+
+The website must work correctly on:
+
+* Mobile phones
+* Tablets
+* Laptops
+* Desktop screens
+
+The mobile layout should look close to the original application interface.
+
+For desktop screens do not simply stretch the mobile interface. Adapt it professionally by using appropriate containers grids side navigation or wider content layouts while preserving the same app-style visual identity.
+
+Use reusable responsive components and avoid fixed widths or hardcoded screen dimensions.
+
+Application structure:
+
+Create or preserve the following main experiences where relevant to the existing project:
+
+* Landing or introduction screen
+* Sign-up and sign-in
+* Parent onboarding
+* User profile and preferences
+* School discovery
+* School search
+* Filters
+* School details
+* School comparison
+* Saved or favourite schools
+* Recommendations
+* Dashboard
+* Settings
+* Loading states
+* Empty states
+* Error pages
+* 404 page
+
+Authentication and data:
+
+* Preserve the current authentication and database integration.
+* Keep sensitive values inside environment variables.
+* Do not expose secrets in frontend code.
+* Create or update an `.env.example` file using placeholder values only.
+* Ensure `.env` and `.env.local` are included in `.gitignore`.
+* Do not commit API keys passwords private URLs service-role keys or database credentials.
+* Do not silently replace real data with mock data.
+* Clearly report any backend feature that cannot work in a static-only deployment.
+
+Code quality:
+
+* Organize the code into reusable components.
+* Remove unused native-mobile packages after confirming they are no longer needed.
+* Fix broken imports routes assets and TypeScript errors.
+* Avoid duplicated components and duplicated styling.
+* Use clean semantic HTML.
+* Maintain consistent naming and folder structure.
+* Add basic validation to forms.
+* Ensure there are no major browser-console errors.
+* Ensure refreshing a route does not break the application.
+* Add a clear README with setup development build and deployment instructions.
+
+GitHub preparation:
+
+Prepare the project so I can upload it to a GitHub repository.
+
+1. Check whether Git is already initialized.
+2. Do not delete existing Git history.
+3. Use `main` as the main branch.
+4. Make sure sensitive files are ignored.
+5. Confirm that generated folders such as `node_modules` and build outputs are ignored where appropriate.
+6. Create a clean production build.
+7. Tell me exactly which files were changed.
+8. Give me the commands required to commit and push the project to GitHub.
+9. Do not push anything until I provide the repository URL or explicitly approve the push.
+
+Deployment:
+
+First determine whether the final project is static or requires a backend.
+
+If the project is fully static:
+
+* Configure it for GitHub Pages.
+* Set the correct base path for the repository.
+* Add a GitHub Actions workflow that builds and deploys the website to GitHub Pages.
+* Make sure assets and client-side routes work after deployment.
+* Explain how to enable GitHub Pages from the repository settings.
+
+If the project requires authentication server APIs databases server actions or backend code:
+
+* Keep the source code on GitHub.
+* Configure the project for deployment through Vercel as the preferred option.
+* Do not force the project onto GitHub Pages.
+* Add the required deployment configuration.
+* Document every required environment variable without exposing its value.
+* Explain how to connect the GitHub repository to Vercel.
+* Explain why GitHub Pages cannot run the backend.
+
+Verification:
+
+After completing the conversion:
+
+* Run the development server.
+* Run linting and type checking.
+* Run the production build.
+* Test the main user journeys.
+* Test mobile tablet and desktop layouts.
+* Check direct URL navigation and page refreshes.
+* Check authentication and protected routes if applicable.
+* Check forms search filters comparison and saved schools.
+* Check that no secrets are included in the repository.
+* Report any remaining issues honestly.
+
+At the end provide:
+
+1. A summary of the original project structure.
+2. The conversion approach you used.
+3. A list of changed files.
+4. Features confirmed to work.
+5. Features that still need work.
+6. The exact local-run commands.
+7. The exact GitHub push commands.
+8. The recommended hosting platform.
+9. The exact deployment steps.
+10. Any environment variables I need to configure.
+
+Do not merely explain how to convert it. Make the required changes directly in the existing project and preserve the original Skoolu application interface as closely as possible.

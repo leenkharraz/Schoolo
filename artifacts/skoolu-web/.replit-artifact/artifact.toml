@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/skoolu-web/"
+title = "Skoolu – School Discovery Web App"
+description = "A responsive web application for Skoolu, a school discovery and comparison platform that helps parents in Saudi Arabia (Riyadh, Jeddah, Dammam) find suitable schools. Includes school discovery with filters and search, school detail pages, favourites, AI chat advisor, booking appointments, alerts/notifications, parent profiles, and sign-up/sign-in flows."
+version = "1.0.0"
+id = "artifacts/skoolu-web"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/skoolu-web/" ]
+localPort = 25359
+
+[services.development]
+run = "pnpm --filter @workspace/skoolu-web run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/skoolu-web", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/skoolu-web/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25359"
+BASE_PATH = "/skoolu-web/"
