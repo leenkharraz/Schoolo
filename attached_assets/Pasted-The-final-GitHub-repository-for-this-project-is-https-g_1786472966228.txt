@@ -1,0 +1,221 @@
+The final GitHub repository for this project is:
+
+https://github.com/leenkharraz/Schoolo.git
+
+I want you to connect the completed **Schoolo responsive web application** to this repository and push it safely.
+
+IMPORTANT: This repository is NOT empty. It already contains the original Schoolo project and existing commit history.
+
+Do NOT force push.
+Do NOT overwrite the repository.
+Do NOT delete the existing Schoolo application.
+Do NOT reset Git history.
+Do NOT replace the current `main` branch contents with only the new web project.
+
+The goal is to preserve the original Schoolo application AND add the new responsive web application to the same repository.
+
+## Repository structure
+
+Keep the existing Schoolo application intact.
+
+Add the new responsive web application under:
+
+`schoolo-web/`
+
+The project name is:
+
+**Schoolo**
+
+NOT Skoolu.
+
+If the current new web application exists under:
+
+`artifacts/skoolu-web/`
+
+use that as the source, but the version committed to GitHub should be named:
+
+`schoolo-web/`
+
+Do not include unnecessary Replit artifact wrappers if they are not required for the web application to run.
+
+The GitHub repository should conceptually contain:
+
+* existing original Schoolo application files
+* `schoolo-web/` — the new responsive React/Vite website
+
+Do not move the original application unless absolutely necessary.
+
+## Before changing Git
+
+First inspect:
+
+* current Git repository
+* current branch
+* current remote URL
+* current Git status
+* existing commits
+* existing files
+* whether the GitHub `main` branch has changes that are not present locally
+
+The previous Replit environment had a different remote configured.
+
+Replace/update the `origin` remote so that it points to:
+
+https://github.com/leenkharraz/Schoolo.git
+
+Do not create duplicate `origin` remotes.
+
+## Protect existing GitHub history
+
+Before committing the new website:
+
+Fetch the GitHub repository.
+
+Make sure the existing `main` history is preserved.
+
+If the local history and GitHub history differ, integrate them safely.
+
+DO NOT use:
+
+`git push --force`
+
+`git reset --hard origin/main`
+
+or any command that destroys existing work.
+
+If there is a Git conflict, stop and explain it instead of automatically deleting one side.
+
+## Final Schoolo web preparation
+
+Before committing, confirm the new `schoolo-web/` contains everything required to run independently.
+
+It should include its own relevant:
+
+* `package.json`
+* source files
+* public assets
+* Vite configuration
+* TypeScript configuration
+* ESLint configuration
+* `.gitignore` where appropriate
+* `vercel.json`
+* README instructions
+
+Do not commit:
+
+* `.env`
+* `.env.local`
+* secrets
+* API keys
+* passwords
+* tokens
+* `node_modules`
+* production build output unless specifically required
+
+Use `.env.example` only if environment variables are actually needed.
+
+## Vercel
+
+The new Schoolo website will be deployed using Vercel from GitHub.
+
+Configure the SPA routing correctly so refreshing routes such as:
+
+`/favorites`
+
+`/profile`
+
+`/schools/...`
+
+does not return a 404.
+
+The Vercel project root directory will be:
+
+`schoolo-web`
+
+Do NOT deploy to Replit.
+
+Do NOT resume the old suspended Replit deployment.
+
+## Verification before push
+
+From the new `schoolo-web/` project run:
+
+* TypeScript check
+* ESLint
+* production build
+* existing tests if available
+
+All required checks must pass before pushing.
+
+Also verify that the original Schoolo application has not been accidentally modified or deleted.
+
+## Commit and push
+
+If everything passes:
+
+Stage ONLY the intended changes.
+
+Create a clear commit such as:
+
+`Add responsive Schoolo web application`
+
+Push normally to:
+
+`origin/main`
+
+Do NOT force push.
+
+## Final verification after push
+
+After pushing, verify:
+
+* remote is `https://github.com/leenkharraz/Schoolo.git`
+* branch is `main`
+* push succeeded
+* working tree is clean
+* original Schoolo application still exists
+* `schoolo-web/` exists in GitHub
+* no sensitive files were committed
+* latest commit exists on `origin/main`
+
+Then give me this report:
+
+### Schoolo GitHub Integration
+
+Original Schoolo preserved: PASS / FAIL
+
+Schoolo web added: PASS / FAIL
+
+Correct repository: PASS / FAIL
+
+Correct `origin`: PASS / FAIL
+
+Main branch: PASS / FAIL
+
+Existing Git history preserved: PASS / FAIL
+
+No force push used: PASS / FAIL
+
+TypeScript: PASS / FAIL
+
+ESLint: PASS / FAIL
+
+Production build: PASS / FAIL
+
+Secrets check: PASS / FAIL
+
+Vercel configuration: PASS / FAIL
+
+Push successful: PASS / FAIL
+
+Working tree clean: PASS / FAIL
+
+Also provide:
+
+* latest commit hash
+* exact GitHub folder containing the web app
+* production build command
+* Vercel root directory
+* anything still blocking deployment
+
+Do not modify the original Schoolo application's functionality while doing this.
