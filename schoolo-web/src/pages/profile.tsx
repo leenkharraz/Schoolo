@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { 
-  User, Settings, Calendar as CalendarIcon, LogOut, CheckCircle2, 
-  Clock, XCircle, MapPin, Edit2 
+  Calendar as CalendarIcon, LogOut, Check,
+  Clock, MapPin
 } from "lucide-react";
 import { useApp } from "@/context/AppContext";
 import { useTheme } from "next-themes";
@@ -183,34 +183,97 @@ export default function Profile() {
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-6 animate-in fade-in">
-          <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
-            <div className="p-4 flex items-center justify-between border-b bg-muted/20">
-              <div>
-                <Label className="text-base font-semibold">Appearance</Label>
-                <p className="text-sm text-muted-foreground">Switch between light and dark mode</p>
-              </div>
-              <Select value={theme} onValueChange={setTheme}>
-                <SelectTrigger className="w-32 bg-background"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
-                </SelectContent>
-              </Select>
+          {/* Appearance */}
+          <div className="rounded-xl border bg-card shadow-sm p-5 space-y-4">
+            <div>
+              <Label className="text-base font-semibold">Appearance</Label>
+              <p className="text-sm text-muted-foreground mt-0.5">Switch between light and dark mode</p>
             </div>
-            <div className="p-4 flex items-center justify-between border-b bg-muted/20">
-              <div>
-                <Label className="text-base font-semibold">Language</Label>
-                <p className="text-sm text-muted-foreground">App interface language</p>
-              </div>
-              <Select value={appLanguage} onValueChange={setAppLanguage}>
-                <SelectTrigger className="w-32 bg-background"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="English">English</SelectItem>
-                  <SelectItem value="Arabic">Arabic</SelectItem>
-                  <SelectItem value="French">French</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-2 gap-3">
+              {(["light", "dark"] as const).map((mode) => {
+                const selected = theme === mode;
+                return (
+                  <button
+                    key={mode}
+                    onClick={() => setTheme(mode)}
+                    className={`relative rounded-xl border-2 overflow-hidden text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                      selected ? "border-primary shadow-md" : "border-border hover:border-primary/40"
+                    }`}
+                  >
+                    {/* Preview panel */}
+                    <div className={`h-20 w-full p-3 flex flex-col gap-1.5 ${
+                      mode === "light" ? "bg-[#FDF6EC]" : "bg-[#0D1B2A]"
+                    }`}>
+                      <div className={`h-2 rounded-full w-3/5 ${mode === "light" ? "bg-[#1B3A5C]/25" : "bg-white/25"}`} />
+                      <div className={`h-1.5 rounded-full w-2/5 ${mode === "light" ? "bg-[#1B3A5C]/15" : "bg-white/15"}`} />
+                      <div className={`mt-auto h-7 rounded-lg w-full flex items-center px-2 gap-1.5 ${
+                        mode === "light" ? "bg-white/80 border border-[#1B3A5C]/10" : "bg-white/8 border border-white/10"
+                      }`}>
+                        <div className={`h-1.5 rounded-full w-1/3 ${mode === "light" ? "bg-[#D4843A]/60" : "bg-[#D4843A]/70"}`} />
+                      </div>
+                    </div>
+                    {/* Label */}
+                    <div className={`px-3 py-2 text-sm font-semibold text-center ${
+                      mode === "light"
+                        ? selected ? "bg-primary/5 text-primary" : "bg-background text-foreground"
+                        : selected ? "bg-primary/10 text-primary" : "bg-[#0D1B2A] text-slate-300"
+                    }`}>
+                      {mode === "light" ? "Light" : "Dark"}
+                    </div>
+                    {/* Checkmark badge */}
+                    {selected && (
+                      <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-primary flex items-center justify-center shadow-sm">
+                        <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Language */}
+          <div className="rounded-xl border bg-card shadow-sm p-5 space-y-4">
+            <div>
+              <Label className="text-base font-semibold">Language</Label>
+              <p className="text-sm text-muted-foreground mt-0.5">App interface language and direction</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {([
+                { value: "English", label: "English", sub: "LTR" },
+                { value: "Arabic", label: "العربية", sub: "RTL" },
+              ]).map((lang) => {
+                const selected = appLanguage === lang.value;
+                return (
+                  <button
+                    key={lang.value}
+                    onClick={() => setAppLanguage(lang.value)}
+                    className={`relative rounded-xl border-2 overflow-hidden text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                      selected ? "border-primary shadow-md" : "border-border hover:border-primary/40"
+                    }`}
+                  >
+                    {/* Preview panel */}
+                    <div className="h-20 w-full p-3 flex flex-col items-center justify-center gap-1 bg-muted/30">
+                      <span className="text-2xl font-bold text-foreground/80">
+                        {lang.value === "English" ? "Aa" : "أأ"}
+                      </span>
+                      <span className="text-[10px] font-medium text-muted-foreground tracking-wider uppercase">{lang.sub}</span>
+                    </div>
+                    {/* Label */}
+                    <div className={`px-3 py-2 text-sm font-semibold text-center transition-colors ${
+                      selected ? "bg-primary/5 text-primary" : "bg-background text-foreground"
+                    }`}>
+                      {lang.label}
+                    </div>
+                    {/* Checkmark badge */}
+                    {selected && (
+                      <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-primary flex items-center justify-center shadow-sm">
+                        <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

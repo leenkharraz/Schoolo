@@ -373,6 +373,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, [save]);
 
+  // Apply RTL/LTR direction whenever language changes
+  useEffect(() => {
+    const isArabic = state.appLanguage === "Arabic";
+    document.documentElement.dir = isArabic ? "rtl" : "ltr";
+    document.documentElement.lang = isArabic ? "ar" : "en";
+  }, [state.appLanguage]);
+
   const unreadAlertCount = state.alerts.filter((a) => !a.read).length;
 
   if (!loaded) return null;

@@ -1,0 +1,236 @@
+Update the **Schoolo Settings page**.
+
+Do not redesign the whole page. Only change the **Appearance** and **Language** controls.
+
+## 1. Replace the Appearance dropdown
+
+Remove the current dropdown that shows:
+
+`Dark`
+
+I want the Appearance selector to look like the reference image I provided.
+
+Create **two visual cards in one row**:
+
+* Light
+* Dark
+
+Each card should include:
+
+* A visual preview area at the top
+* The mode name underneath
+* A clear selected state
+* A small checkmark badge on the selected card
+
+### Light
+
+Show a cream/beige preview that represents the current Schoolo light theme.
+
+### Dark
+
+Show a dark navy/black preview representing the current Schoolo dark theme.
+
+Do NOT create a Calm mode.
+
+Do NOT invent any new theme.
+
+The selected Appearance card should have:
+
+* visible border
+* subtle selected background
+* checkmark badge
+* proper contrast in both light and dark mode
+
+Clicking a card must immediately switch the actual application theme.
+
+Do not require a Save button.
+
+The selected mode must persist after refresh using the current Schoolo preferences/theme system.
+
+---
+
+## 2. Replace the Language dropdown
+
+Remove the current Language dropdown that shows:
+
+`Arabic`
+
+Replace it with the same card-based selector style used for Appearance.
+
+Create two cards:
+
+* English
+* العربية
+
+Each card should visually match the Appearance selector in:
+
+* size
+* border radius
+* selected border
+* spacing
+* checkmark position
+* hover state
+* active state
+
+The selected language must have a clear checkmark indicator.
+
+Clicking:
+
+**English**
+
+must immediately switch Schoolo to English and LTR.
+
+Clicking:
+
+**العربية**
+
+must immediately switch Schoolo to Arabic and RTL.
+
+Do not require a Save button.
+
+Persist the selected language after refresh.
+
+---
+
+## 3. Arabic / RTL behavior
+
+When Arabic is selected:
+
+* Change document direction to RTL
+* Use Arabic translations where translations exist
+* Align text correctly
+* Ensure forms and text inputs behave correctly
+* Keep navigation usable
+
+However do NOT blindly mirror every component.
+
+The general Settings layout and card positioning should remain visually consistent with the English version unless RTL behavior genuinely requires a change.
+
+The Appearance selector should keep the same visual order:
+
+`Light | Dark`
+
+The Language selector should also stay clean and predictable.
+
+---
+
+## 4. Responsive behavior
+
+### Desktop / Laptop
+
+Appearance cards:
+
+`Light | Dark`
+
+Language cards:
+
+`English | العربية`
+
+Keep them horizontal where space allows.
+
+### Mobile
+
+The controls must fit naturally inside the mobile Settings page.
+
+Do not create horizontal overflow.
+
+The cards may resize or stack if necessary on very narrow screens.
+
+Do not make them too small to read or tap.
+
+---
+
+## 5. Design
+
+Use the existing Schoolo design system.
+
+Keep:
+
+* Schoolo cream
+* navy
+* orange accent
+* existing typography
+* rounded cards
+* existing light theme
+* existing dark theme
+
+Do not introduce a third theme or unrelated colors.
+
+I want the selectors to feel native to Schoolo rather than generic browser controls.
+
+Use the reference image as visual inspiration for:
+
+* preview panel
+* selected border
+* checkmark badge
+* spacing
+* rounded shape
+* overall card interaction
+
+---
+
+## 6. Remove old controls completely
+
+After implementing the new cards:
+
+* Remove the old Appearance `<select>` dropdown
+* Remove the old Language `<select>` dropdown
+* Remove unused CSS
+* Remove state or handlers that were only needed for the old dropdown implementation
+* Do not leave duplicate selectors
+
+Do not remove code that is still needed for theme or language persistence.
+
+---
+
+## 7. Functionality verification
+
+Verify:
+
+* Light mode works
+* Dark mode works
+* English works
+* Arabic works
+* Light/Dark preference persists after refresh
+* Language preference persists after refresh
+* Arabic correctly enables RTL
+* Switching back to English restores LTR
+* Selected cards remain visually obvious
+* Checkmarks are visible in both themes
+* Text remains readable in light mode
+* Text remains readable in dark mode
+* Mobile layout has no overflow
+* Desktop layout remains polished
+
+---
+
+## Final verification
+
+Run:
+
+* TypeScript
+* ESLint
+* production build
+
+Then provide:
+
+### Schoolo Settings Update
+
+* Appearance card selector: PASS / FAIL
+* Light mode: PASS / FAIL
+* Dark mode: PASS / FAIL
+* Language card selector: PASS / FAIL
+* English: PASS / FAIL
+* Arabic: PASS / FAIL
+* RTL: PASS / FAIL
+* Theme persistence: PASS / FAIL
+* Language persistence: PASS / FAIL
+* Mobile responsive: PASS / FAIL
+* Desktop responsive: PASS / FAIL
+* TypeScript: PASS / FAIL
+* ESLint: PASS / FAIL
+* Production build: PASS / FAIL
+
+Do not change unrelated Schoolo functionality.
+
+Do not add Calm mode.
