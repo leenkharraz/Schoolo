@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRoute, Link } from "wouter";
+import type { School } from "@/data/schools";
 import { 
   ArrowLeft, MapPin, Star, Heart, Share, Calendar, Users, 
   BookOpen, Globe, Award, CheckCircle2, ChevronRight, Calculator,

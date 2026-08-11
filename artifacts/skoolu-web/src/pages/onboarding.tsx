@@ -10,13 +10,12 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
 
   useEffect(() => {
-    if (step === 3) {
-      const timer = setTimeout(() => {
-        updateUser({ hasCompletedOnboarding: true });
-        setLocation("/");
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
+    if (step !== 3) return;
+    const timer = setTimeout(() => {
+      updateUser({ hasCompletedOnboarding: true });
+      setLocation("/");
+    }, 2000);
+    return () => clearTimeout(timer);
   }, [step, setLocation, updateUser]);
 
   const handleNext = () => {

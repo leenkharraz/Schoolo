@@ -1,0 +1,259 @@
+I want to finish the conversion of my project **Schoolo** from its original application version into a responsive web application.
+
+Do NOT add any new features yet.
+
+The priority now is to verify the web conversion, clean the project, prepare it for GitHub, and prepare it for public deployment.
+
+## 1. Audit the Schoolo web version
+
+Inspect the entire newly created **Schoolo web application**.
+
+Confirm whether the following features are using real functionality from the original Schoolo application or whether they were recreated using static data, mock data, placeholder data, or simulated behavior:
+
+* Sign in
+* Sign up
+* User profile
+* Children information
+* School discovery
+* Search
+* Filters
+* School details
+* School comparison if it already exists
+* Favorites
+* Recommendations
+* Bookings
+* Notifications
+* AI school advisor/chat
+* Settings
+* Dark mode
+* Any database functionality
+* Any API functionality
+
+Do NOT replace working real functionality with mock functionality.
+
+If something is currently mocked, clearly tell me.
+
+## 2. Preserve the original application
+
+The original **Schoolo mobile/application version must remain untouched**.
+
+Do not delete it.
+
+Do not overwrite it.
+
+Do not move its files unless absolutely necessary.
+
+The responsive web version should remain separate from the original application.
+
+Clearly identify:
+
+* The folder containing the original Schoolo application
+* The folder containing the new Schoolo web application
+
+## 3. Verify responsive design
+
+The Schoolo web version must preserve the application-style experience.
+
+On mobile phones:
+
+* Keep the interface as close as possible to the original Schoolo application
+* Keep the mobile navigation
+* Keep the same cards
+* Keep the same visual hierarchy
+* Keep the same colors
+* Keep the same branding
+* Keep the same user flow
+
+On larger screens:
+
+Do NOT simply stretch the mobile application.
+
+Professionally adapt the interface for:
+
+* Mobile
+* Tablet
+* Laptop
+* Desktop
+
+Use responsive grids, containers, navigation, spacing, and layouts while preserving the Schoolo visual identity.
+
+## 4. Verify all existing pages
+
+Check every existing web page and route.
+
+Make sure there are no:
+
+* Broken layouts
+* Broken routes
+* Missing images
+* Missing icons
+* Overflow issues
+* Invisible text
+* Dark mode contrast problems
+* Buttons that do nothing
+* Forms that do nothing
+* Browser console errors
+* Broken mobile layouts
+
+Do not redesign working pages unnecessarily.
+
+## 5. Fix technical problems
+
+Run all relevant checks available in the project.
+
+Run:
+
+* TypeScript checking
+* Linting
+* Production build
+* Existing automated tests if available
+
+Fix errors caused by the Schoolo web conversion.
+
+Do not hide errors or disable checks just to make them pass.
+
+If an error is from the old original application and is unrelated to the new web version, clearly identify it instead of modifying unrelated code.
+
+## 6. GitHub preparation
+
+Prepare the **Schoolo web project** for GitHub.
+
+Do NOT push anything yet.
+
+Check:
+
+* Whether Git is already initialized
+* Current branch
+* Existing remotes
+* `.gitignore`
+* `.env`
+* `.env.local`
+* API keys
+* passwords
+* database credentials
+* private URLs
+* secret tokens
+
+Make sure sensitive files and secrets cannot be committed.
+
+Create or update `.env.example` using placeholder values only if environment variables are needed.
+
+Do not expose real secret values in your final response.
+
+## 7. Determine the correct deployment method
+
+Inspect the Schoolo web architecture and determine whether it is:
+
+### Static frontend only
+
+If Schoolo is genuinely static and does not require backend execution, authentication servers, server APIs, or a database connection that needs server-side code:
+
+Recommend **GitHub Pages** if appropriate.
+
+### Full web application
+
+If Schoolo uses:
+
+* Authentication
+* Database
+* Server-side APIs
+* Backend functions
+* Server actions
+* Private environment variables
+* AI APIs
+* Any server runtime
+
+Recommend **Vercel** or another appropriate deployment platform instead.
+
+Do NOT force GitHub Pages if the architecture requires a backend.
+
+The source code should still be stored on GitHub regardless of the deployment platform.
+
+## 8. Do not use the suspended Replit deployment
+
+My previous Replit deployment is currently suspended.
+
+Do NOT:
+
+* Resume it
+* Modify its billing
+* Redeploy using the old suspended Replit deployment
+* Depend on `SchooloSa.replit.app`
+
+The target is:
+
+**Schoolo application → responsive Schoolo web version → GitHub → public web deployment**
+
+## 9. Do not add features
+
+Do NOT add:
+
+* New school comparison features
+* New AI functionality
+* New pages
+* New dashboards
+* New recommendation systems
+* New design concepts
+
+unless those features already existed in Schoolo.
+
+Right now I only want to finish and verify the conversion.
+
+## FINAL REPORT
+
+When finished give me this exact report:
+
+### Schoolo Web Conversion
+
+* Original application preserved: PASS / FAIL
+* Web application separated correctly: PASS / FAIL
+* Mobile application look preserved: PASS / FAIL
+* Tablet responsive: PASS / FAIL
+* Laptop responsive: PASS / FAIL
+* Desktop responsive: PASS / FAIL
+* Navigation working: PASS / FAIL
+* Forms working: PASS / FAIL
+* Dark mode working: PASS / FAIL
+* Production build: PASS / FAIL
+* TypeScript: PASS / FAIL
+* Lint: PASS / FAIL
+* Browser console: PASS / FAIL
+* GitHub safe: PASS / FAIL
+
+### Real vs Mock Functionality
+
+List every feature that uses:
+
+* Real data
+* Static data
+* Mock data
+* Simulated functionality
+
+I especially want to know if login, profile, favorites, bookings, school information, or the AI advisor are fake/mock implementations.
+
+### Project Location
+
+Give me:
+
+* Exact original Schoolo application folder
+* Exact Schoolo web application folder
+
+### Deployment
+
+Tell me:
+
+* GitHub Pages suitable: YES / NO
+* Vercel recommended: YES / NO
+* Why
+* Whether a backend is required
+* Whether environment variables are required
+
+### Remaining Work
+
+Give me a short checklist of anything that still needs to be completed before Schoolo can be pushed to GitHub and deployed publicly.
+
+Do NOT push to GitHub yet.
+
+Do NOT deploy yet.
+
+Wait for me to provide the GitHub repository URL after this audit.
